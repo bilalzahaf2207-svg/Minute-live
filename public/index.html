@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Minute — courses de dernière minute, au meilleur prix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --surface-2:#f0f2f5; --text:#0d1520; --muted:#65758b;
+  --border:#e3e8ee; --brand:#0f9d58; --brand-dark:#0b7c45; --brand-soft:#e6f6ee;
+  --accent:#ff6a1a; --accent-soft:#fff0e6; --danger:#d93025; --deal:#0b7c45; --deal-soft:#d9f2e4;
+  --shadow:0 2px 10px rgba(13,21,32,.07); --shadow-lg:0 10px 30px rgba(13,21,32,.14);
+  --radius:16px; --maxw:520px; --fs:1rem;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b0f14;--surface:#141b23;--surface-2:#1c242e;--text:#eef3f8;--muted:#94a3b5;--border:#25303c;
+  --brand:#2fbd77;--brand-dark:#25a166;--brand-soft:#11291f;--accent:#ff874d;--accent-soft:#2a1a10;
+  --danger:#ff6b5e;--deal:#3ecd85;--deal-soft:#102a1d;--shadow:0 2px 10px rgba(0,0,0,.4);--shadow-lg:0 10px 30px rgba(0,0,0,.5);}}
+:root[data-theme="dark"]{
+  --bg:#0b0f14;--surface:#141b23;--surface-2:#1c242e;--text:#eef3f8;--muted:#94a3b5;--border:#25303c;
+  --brand:#2fbd77;--brand-dark:#25a166;--brand-soft:#11291f;--accent:#ff874d;--accent-soft:#2a1a10;
+  --danger:#ff6b5e;--deal:#3ecd85;--deal-soft:#102a1d;--shadow:0 2px 10px rgba(0,0,0,.4);--shadow-lg:0 10px 30px rgba(0,0,0,.5);}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-size:var(--fs);line-height:1.45;overflow-x:hidden;
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+body.comfort{--fs:1.16rem;--radius:18px}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;border:none;background:none;text-align:left}
+input{font-family:inherit;font-size:inherit;color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;min-height:100vh;padding-bottom:110px;position:relative}
+.pad{padding:0 16px}
+.topbar{position:sticky;top:0;z-index:40;background:var(--surface);border-bottom:1px solid var(--border)}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 16px}
+.loc{display:flex;align-items:center;gap:10px;width:100%}
+.loc .pin{width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
+.loc .txt{min-width:0;flex:1}
+.loc .lbl{font-size:.7em;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase;display:block}
+.loc .val{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.iconbtn{width:38px;height:38px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;flex:0 0 38px;text-align:center}
+.brandrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.logo{display:flex;align-items:center;gap:7px;font-weight:800;letter-spacing:-.02em;font-size:1.12em}
+.logo .dot{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;color:#fff;font-size:.72em}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:10px 12px;margin-top:10px}
+.search input{border:none;background:none;outline:none;width:100%}
+.h1{font-size:1.45em;font-weight:800;letter-spacing:-.02em;margin:18px 0 4px}
+.h2{font-size:1.06em;font-weight:800;margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sub{color:var(--muted);font-size:.87em}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--brand);color:#fff;font-weight:700;
+  padding:15px 18px;border-radius:14px;width:100%;transition:transform .08s}
+.btn:active{transform:scale(.985)}
+.btn.sec{background:var(--surface-2);color:var(--text);border:1px solid var(--border)}
+.btn.deal{background:var(--deal)}
+.btn.ghost{background:transparent;color:var(--brand);font-weight:700;padding:10px;justify-content:center}
+.btn.sm{padding:10px 14px;border-radius:12px;font-size:.9em;width:auto}
+.pill{display:inline-flex;align-items:center;gap:4px;font-size:.75em;font-weight:700;padding:3px 8px;border-radius:999px;
+  background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.green{background:var(--brand-soft);color:var(--brand-dark)}
+.pill.deal{background:var(--deal-soft);color:var(--deal)}
+.pill.orange{background:var(--accent-soft);color:var(--accent)}
+.pill.red{background:rgba(217,48,37,.12);color:var(--danger)}
+.row{display:flex;align-items:center;gap:10px}
+.scroll-x{display:flex;gap:10px;overflow-x:auto;padding:2px 16px 6px;margin:0 -16px;scrollbar-width:none}
+.scroll-x::-webkit-scrollbar{display:none}
+.ob{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px 20px}
+.ob .big{font-size:1.95em;font-weight:800;letter-spacing:-.03em;line-height:1.15;margin:14px 0 6px}
+.profcard{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--radius);background:var(--surface);
+  border:2px solid var(--border);width:100%;margin-bottom:10px;box-shadow:var(--shadow)}
+.profcard.on{border-color:var(--brand);background:var(--brand-soft)}
+.profcard .ic{font-size:1.6em;width:46px;height:46px;flex:0 0 46px;border-radius:14px;background:var(--surface-2);display:grid;place-items:center}
+.profcard b{display:block}.profcard span{font-size:.84em;color:var(--muted)}
+.store{display:block;width:100%;padding:14px;margin-bottom:12px;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow)}
+.store.closed{opacity:.55}
+.slogo{width:50px;height:50px;flex:0 0 50px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:1em}
+.nm{font-weight:800;display:flex;align-items:center;gap:6px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.eta{text-align:right;flex:0 0 auto}.eta b{display:block}.eta span{font-size:.72em;color:var(--muted)}
+.ql{flex:0 0 190px;padding:14px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:5px;min-height:120px}
+.ql .em{font-size:1.45em}.ql b{font-size:.95em;line-height:1.2}.ql span{font-size:.77em;color:var(--muted)}
+.ql .go{margin-top:auto;font-size:.79em;font-weight:700;color:var(--brand)}
+.cattab{flex:0 0 auto;padding:9px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-weight:700;font-size:.85em;white-space:nowrap}
+.cattab.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.prod{padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px}
+.prod .em{width:48px;height:48px;flex:0 0 48px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;font-size:1.45em}
+.prod .info{flex:1;min-width:0}
+.prod .info b{display:block;font-weight:700;font-size:.95em;line-height:1.25}
+.prod .info .vl{font-size:.8em;color:var(--muted);display:block}
+.price{font-weight:800;white-space:nowrap}
+.was{text-decoration:line-through;color:var(--muted);font-weight:600;font-size:.82em}
+.addbtn{width:38px;height:38px;flex:0 0 38px;border-radius:12px;background:var(--brand);color:#fff;font-size:1.25em;font-weight:700;display:grid;place-items:center}
+.qty{display:flex;align-items:center;gap:2px;background:var(--brand);border-radius:12px;color:#fff;flex:0 0 auto}
+.qty button{width:34px;height:38px;color:#fff;font-size:1.2em;font-weight:700;text-align:center}
+.qty b{min-width:20px;text-align:center;font-size:.95em}
+.compare{display:flex;align-items:center;gap:6px;width:100%;margin-top:10px;padding:8px 10px;border-radius:11px;
+  background:var(--deal-soft);color:var(--deal);font-weight:700;font-size:.82em}
+.varrow{display:flex;align-items:center;gap:11px;padding:12px;border-radius:14px;border:2px solid var(--border);margin-bottom:9px;background:var(--surface)}
+.varrow.best{border-color:var(--deal);background:var(--deal-soft)}
+.varrow.cur{border-color:var(--brand)}
+.varrow .info{flex:1;min-width:0}
+.varrow b{display:block;font-size:.93em}
+.varrow .u{font-size:.78em;color:var(--muted)}
+.crit{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.line{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:.94em}
+.line.total{font-weight:800;font-size:1.1em;border-top:1px solid var(--border);margin-top:8px;padding-top:12px}
+.line.eco{color:var(--deal);font-weight:700}
+.opt{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)}
+.opt:last-child{border-bottom:none}.opt .info{flex:1}.opt b{display:block;font-size:.94em}.opt span{font-size:.79em;color:var(--muted)}
+.sw{width:48px;height:28px;flex:0 0 48px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);position:relative;transition:.18s}
+.sw i{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .18s}
+.sw.on{background:var(--brand);border-color:var(--brand)}.sw.on i{transform:translateX(20px)}
+.radio{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border);width:100%}
+.radio:last-child{border-bottom:none}
+.dotr{width:22px;height:22px;flex:0 0 22px;border-radius:50%;border:2px solid var(--border);display:grid;place-items:center}
+.radio.on .dotr{border-color:var(--brand)}
+.radio.on .dotr::after{content:'';width:11px;height:11px;border-radius:50%;background:var(--brand)}
+.cartbar{position:fixed;bottom:0;left:0;right:0;z-index:50;padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  background:var(--surface);border-top:1px solid var(--border);box-shadow:var(--shadow-lg)}
+.cartbar-in{max-width:var(--maxw);margin:0 auto}
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:45;background:var(--surface);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar-in{max-width:var(--maxw);margin:0 auto;display:flex}
+.tab{flex:1;padding:9px 4px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:.67em;font-weight:700;text-align:center}
+.tab .ic{font-size:1.32em;line-height:1;position:relative}
+.tab.on{color:var(--brand)}
+.badge{position:absolute;top:-5px;right:-11px;background:var(--accent);color:#fff;font-size:.56rem;font-weight:800;min-width:17px;height:17px;border-radius:999px;display:grid;place-items:center;padding:0 4px}
+.nudge{position:fixed;left:0;right:0;z-index:55;bottom:calc(76px + env(safe-area-inset-bottom));padding:0 16px}
+.nudge-in{max-width:calc(var(--maxw) - 32px);margin:0 auto;background:var(--deal);color:#fff;border-radius:16px;padding:12px 14px;box-shadow:var(--shadow-lg);
+  display:flex;align-items:center;gap:10px;animation:up .25s ease}
+@keyframes up{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.nudge b{display:block;font-size:.9em}.nudge span{font-size:.78em;opacity:.92}
+.nudge .act{background:#fff;color:var(--deal);font-weight:800;padding:9px 12px;border-radius:11px;font-size:.84em;white-space:nowrap;text-align:center}
+.track{padding:18px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow)}
+.step{display:flex;gap:14px;align-items:flex-start;position:relative;padding-bottom:20px}
+.step:last-child{padding-bottom:0}
+.step .bul{width:26px;height:26px;flex:0 0 26px;border-radius:50%;background:var(--surface-2);border:2px solid var(--border);display:grid;place-items:center;font-size:.73em;z-index:2}
+.step::before{content:'';position:absolute;left:12px;top:26px;bottom:0;width:2px;background:var(--border)}
+.step:last-child::before{display:none}
+.step.done .bul{background:var(--brand);border-color:var(--brand);color:#fff}
+.step.done::before{background:var(--brand)}
+.step.now .bul{background:var(--accent);border-color:var(--accent);color:#fff;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,106,26,.5)}50%{box-shadow:0 0 0 9px rgba(255,106,26,0)}}
+.step b{font-size:.95em}.step span{display:block;font-size:.81em;color:var(--muted)}
+.progressbar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin-top:14px}
+.progressbar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--accent));transition:width .6s}
+.empty{text-align:center;padding:48px 24px;color:var(--muted)}
+.empty .em{font-size:2.8em;display:block;margin-bottom:10px}
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(20px);bottom:130px;z-index:99;background:var(--text);color:var(--bg);
+  padding:11px 18px;border-radius:999px;font-weight:700;font-size:.84em;opacity:0;transition:.25s;pointer-events:none;max-width:88vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.sheetbg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:60;opacity:0;pointer-events:none;transition:.2s}
+.sheetbg.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--surface);border-radius:22px 22px 0 0;
+  padding:18px 16px calc(20px + env(safe-area-inset-bottom));transform:translateY(105%);transition:.25s cubic-bezier(.3,.9,.3,1);
+  max-width:var(--maxw);margin:0 auto;max-height:88vh;overflow-y:auto}
+.sheet.on{transform:translateY(0)}
+.grab{width:40px;height:4px;border-radius:99px;background:var(--border);margin:0 auto 14px}
+.field{width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--border);background:var(--surface-2);outline:none;margin-top:8px}
+.back{display:flex;align-items:center;gap:6px;font-weight:700;padding:12px 0}
+.hero{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;border-radius:var(--radius);padding:15px;margin-top:14px;width:100%}
+.hero b{font-size:1em}.hero p{margin:4px 0 0;font-size:.84em;opacity:.9}
+.ecohero{background:linear-gradient(135deg,var(--deal),#0a6b3c);color:#fff;border-radius:var(--radius);padding:15px;width:100%;margin-top:12px}
+.ordercard{padding:14px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+<div class="sheetbg" id="sheetbg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet"></div>
+<script>
+/* ==========================================================
+   MINUTE v2 — courses de dernière minute + comparateur
+   d'équivalents moins chers à qualité équivalente.
+   ========================================================== */
+
+/* ---------- CATÉGORIES ---------- */
+const CATS=[
+ {id:'essentiels',name:'Essentiels',em:'⭐'},{id:'frais',name:'Frais & crèmerie',em:'🧀'},
+ {id:'bebe',name:'Bébé & enfant',em:'🍼'},{id:'fruits',name:'Fruits & légumes',em:'🥕'},
+ {id:'epicerie',name:'Épicerie',em:'🥫'},{id:'boissons',name:'Boissons',em:'🧃'},
+ {id:'hygiene',name:'Hygiène & entretien',em:'🧻'},{id:'surgele',name:'Surgelés',em:'🧊'},
+ {id:'snack',name:'Snacks & apéro',em:'🥨'}];
+
+/* ---------- FAMILLES DE PRODUITS ----------
+   Chaque famille = un besoin. Les variantes sont interchangeables :
+   même usage, contenance comparée au litre/kilo/unité.
+   variante = [id, libellé, gamme(1..4), format, quantité en unité de base, prix, Nutri-Score, note clients]
+   gamme : 1 premier prix · 2 marque distributeur · 3 marque nationale · 4 premium/bio
+--------------------------------------------- */
+const F=(id,cat,em,name,unit,vars)=>({id,cat,em,name,unit,
+  vars:vars.map(v=>({id:v[0],label:v[1],tier:v[2],size:v[3],qty:v[4],price:v[5],nutri:v[6]||'',rate:v[7],fam:id,cat,em,famName:name,unit}))});
+
+const DEMO_FAMILIES=[
+F('lait','essentiels','🥛','Lait demi-écrémé','L',[
+ ['lait4','Bio origine France',4,'1 L',1,1.55,'B',4.6],
+ ['lait3','Grande marque',3,'1 L',1,1.15,'B',4.4],
+ ['lait2','Marque distributeur',2,'1 L',1,0.89,'B',4.3],
+ ['lait2b','Marque distributeur — pack 6',2,'6 × 1 L',6,4.74,'B',4.3],
+ ['lait1','Premier prix',1,'1 L',1,0.75,'B',4.0]]),
+F('pain','essentiels','🍞','Pain de mie complet','kg',[
+ ['pain3','Grande marque',3,'500 g',0.5,1.95,'C',4.3],
+ ['pain2','Marque distributeur',2,'500 g',0.5,1.45,'C',4.2],
+ ['pain2g','Marque distributeur — maxi',2,'750 g',0.75,1.85,'C',4.2],
+ ['pain1','Premier prix',1,'500 g',0.5,0.99,'C',3.9]]),
+F('oeufs','essentiels','🥚','Œufs frais','œuf',[
+ ['oeufs4','Bio',4,'x6',6,3.40,'',4.7],
+ ['oeufs3','Plein air',3,'x6',6,2.60,'',4.5],
+ ['oeufs3b','Plein air — boîte de 12',3,'x12',12,4.20,'',4.5],
+ ['oeufs2','Au sol',2,'x6',6,1.55,'',4.0]]),
+F('beurre','essentiels','🧈','Beurre doux','kg',[
+ ['beurre4','AOP Charentes',4,'250 g',0.25,3.45,'D',4.7],
+ ['beurre3','Grande marque',3,'250 g',0.25,2.65,'D',4.4],
+ ['beurre2','Marque distributeur',2,'250 g',0.25,2.05,'D',4.3],
+ ['beurre2g','Marque distributeur — 500 g',2,'500 g',0.5,3.60,'D',4.3]]),
+F('pates','essentiels','🍝','Pâtes penne','kg',[
+ ['pates3','Grande marque',3,'500 g',0.5,1.55,'A',4.4],
+ ['pates2','Marque distributeur',2,'500 g',0.5,0.95,'A',4.3],
+ ['pates2g','Marque distributeur — 1 kg',2,'1 kg',1,1.70,'A',4.3],
+ ['pates1','Premier prix',1,'500 g',0.5,0.65,'A',3.9]]),
+F('riz','essentiels','🍚','Riz long grain','kg',[
+ ['riz3','Grande marque',3,'1 kg',1,3.20,'A',4.3],
+ ['riz2','Marque distributeur',2,'1 kg',1,2.10,'A',4.2],
+ ['riz2g','Marque distributeur — 5 kg',2,'5 kg',5,7.90,'A',4.2]]),
+F('huile','essentiels','🫒',"Huile d'olive vierge extra",'L',[
+ ['huile4','AOP premium',4,'50 cl',0.5,6.90,'C',4.6],
+ ['huile2','Marque distributeur',2,'50 cl',0.5,4.50,'C',4.3],
+ ['huile2g','Marque distributeur — 1 L',2,'1 L',1,7.90,'C',4.3]]),
+F('rape','frais','🧀','Emmental râpé','kg',[
+ ['rape3','Grande marque',3,'200 g',0.2,2.60,'D',4.3],
+ ['rape2','Marque distributeur',2,'200 g',0.2,1.75,'D',4.2],
+ ['rape2g','Marque distributeur — 400 g',2,'400 g',0.4,3.10,'D',4.2]]),
+F('jambon','frais','🥓','Jambon blanc','kg',[
+ ['jambon4','Label supérieur sans nitrite',4,'x4 · 180 g',0.18,3.60,'B',4.5],
+ ['jambon2','Marque distributeur',2,'x4 · 180 g',0.18,2.40,'B',4.2],
+ ['jambon1','Premier prix',1,'x4 · 160 g',0.16,1.75,'C',3.8]]),
+F('yaourt','frais','🥣','Yaourts nature','pot',[
+ ['yaourt3','Grande marque',3,'x8',8,2.60,'A',4.5],
+ ['yaourt2','Marque distributeur',2,'x8',8,1.55,'A',4.3],
+ ['yaourt2g','Marque distributeur — x16',2,'x16',16,2.80,'A',4.3]]),
+F('camembert','frais','🧀','Camembert','kg',[
+ ['camem4','AOP Normandie',4,'250 g',0.25,3.20,'D',4.6],
+ ['camem2','Marque distributeur',2,'250 g',0.25,1.95,'D',4.2]]),
+F('couches','bebe','🧷','Couches taille 4 (9-14 kg)','couche',[
+ ['couch3','Marque leader',3,'x50',50,15.90,'',4.6],
+ ['couch2','Marque distributeur',2,'x50',50,9.90,'',4.4],
+ ['couch2g','Marque distributeur — méga pack',2,'x100',100,17.50,'',4.4],
+ ['couch1','Premier prix',1,'x50',50,7.50,'',4.0]]),
+F('laitinf','bebe','🍼','Lait infantile 2ᵉ âge','kg',[
+ ['linf3','Marque leader',3,'800 g',0.8,19.90,'',4.5],
+ ['linf2','Marque distributeur',2,'800 g',0.8,12.50,'',4.4]]),
+F('lingettes','bebe','🧻','Lingettes bébé à l’eau','lingette',[
+ ['ling3','Marque leader',3,'x72',72,3.20,'',4.4],
+ ['ling2','Marque distributeur',2,'x72',72,1.60,'',4.3],
+ ['ling2g','Marque distributeur — lot de 3',2,'x216',216,4.20,'',4.3]]),
+F('compote','bebe','🍎','Compotes pommes sans sucres ajoutés','gourde',[
+ ['comp3','Marque leader',3,'x4',4,2.35,'A',4.5],
+ ['comp2','Marque distributeur',2,'x4',4,1.35,'A',4.3],
+ ['comp2g','Marque distributeur — x12',2,'x12',12,3.30,'A',4.3]]),
+F('petitpot','bebe','🫙','Petits pots légumes','pot',[
+ ['pp3','Marque leader',3,'x2',2,2.60,'A',4.4],
+ ['pp2','Marque distributeur',2,'x2',2,1.60,'A',4.2]]),
+F('banane','fruits','🍌','Bananes','kg',[
+ ['ban4','Bio équitable',4,'1 kg',1,2.90,'',4.5],
+ ['ban2','Origine Antilles',2,'1 kg',1,1.79,'',4.3]]),
+F('pomme','fruits','🍏','Pommes','kg',[
+ ['pom4','Bio',4,'1 kg',1,3.40,'',4.5],
+ ['pom3','Gala calibre moyen',3,'1 kg',1,2.19,'',4.4],
+ ['pom2','Filet 2 kg',2,'2 kg',2,3.60,'',4.2]]),
+F('carotte','fruits','🥕','Carottes','kg',[
+ ['car4','Bio',4,'1 kg',1,2.40,'',4.4],
+ ['car3','Origine France',3,'1 kg',1,1.35,'',4.3],
+ ['car2','Filet 2 kg',2,'2 kg',2,2.20,'',4.2]]),
+F('pdt','fruits','🥔','Pommes de terre','kg',[
+ ['pdt3','Sac 2,5 kg',3,'2,5 kg',2.5,3.40,'',4.3],
+ ['pdt2','Sac 5 kg',2,'5 kg',5,4.90,'',4.2]]),
+F('cafe','epicerie','☕','Café moulu','kg',[
+ ['cafe3','Grande marque',3,'250 g',0.25,3.90,'',4.5],
+ ['cafe2','Marque distributeur',2,'250 g',0.25,2.35,'',4.2],
+ ['cafe2g','Marque distributeur — 1 kg',2,'1 kg',1,8.20,'',4.2],
+ ['cafe1','Premier prix',1,'250 g',0.25,1.65,'',3.8]]),
+F('cereales','epicerie','🥣','Céréales chocolatées','kg',[
+ ['cer3','Grande marque',3,'375 g',0.375,3.60,'C',4.4],
+ ['cer2','Marque distributeur',2,'375 g',0.375,1.95,'C',4.2],
+ ['cer2g','Marque distributeur — 1 kg',2,'1 kg',1,3.90,'C',4.2]]),
+F('thon','epicerie','🐟','Thon au naturel','kg',[
+ ['thon3','Grande marque',3,'x3 · 240 g',0.24,4.20,'A',4.4],
+ ['thon2','Marque distributeur',2,'x3 · 240 g',0.24,2.60,'A',4.2]]),
+F('sauce','epicerie','🥫','Sauce tomate basilic','kg',[
+ ['sauce3','Grande marque',3,'400 g',0.4,1.85,'B',4.3],
+ ['sauce2','Marque distributeur',2,'400 g',0.4,0.95,'B',4.1]]),
+F('choco','epicerie','🍫','Chocolat noir 70 %','kg',[
+ ['choc3','Grande marque',3,'100 g',0.1,2.20,'C',4.5],
+ ['choc2','Marque distributeur',2,'100 g',0.1,1.10,'C',4.2]]),
+F('soupe','epicerie','🍲','Soupe de légumes','L',[
+ ['soup3','Grande marque',3,'1 L',1,2.60,'B',4.4],
+ ['soup2','Marque distributeur',2,'1 L',1,1.45,'B',4.2]]),
+F('eau','boissons','💧','Eau minérale','L',[
+ ['eau3','Grande marque',3,'6 × 1,5 L',9,3.60,'',4.5],
+ ['eau2','Marque distributeur',2,'6 × 1,5 L',9,1.95,'',4.3],
+ ['eau1','Premier prix (source)',1,'6 × 1,5 L',9,1.29,'',4.0]]),
+F('jus','boissons','🧃',"Jus d'orange 100 % pur jus",'L',[
+ ['jus4','Pressé réfrigéré',4,'1 L',1,2.90,'C',4.6],
+ ['jus2','Marque distributeur',2,'1 L',1,1.55,'C',4.3]]),
+F('capsules','boissons','☕','Capsules de café','capsule',[
+ ['caps3','Marque originale',3,'x10',10,4.50,'',4.5],
+ ['caps2','Compatibles marque distributeur',2,'x10',10,2.20,'',4.2],
+ ['caps2g','Compatibles — lot x50',2,'x50',50,9.50,'',4.2]]),
+F('cola','boissons','🥤','Soda cola','L',[
+ ['cola3','Grande marque',3,'1,5 L',1.5,2.20,'E',4.5],
+ ['cola2','Marque distributeur',2,'1,5 L',1.5,0.85,'E',4.0]]),
+F('pq','hygiene','🧻','Papier toilette','rouleau',[
+ ['pq3','Grande marque',3,'x6',6,4.50,'',4.4],
+ ['pq2','Marque distributeur',2,'x6',6,2.60,'',4.2],
+ ['pq2g','Marque distributeur — x12',2,'x12',12,4.40,'',4.2]]),
+F('lessive','hygiene','🧺','Lessive liquide','lavage',[
+ ['less3','Grande marque',3,'30 lavages',30,9.90,'',4.5],
+ ['less2','Marque distributeur',2,'30 lavages',30,5.50,'',4.3],
+ ['less2g','Marque distributeur — 60 lavages',2,'60 lavages',60,9.20,'',4.3]]),
+F('douche','hygiene','🧼','Gel douche','L',[
+ ['dou3','Grande marque',3,'400 ml',0.4,3.20,'',4.4],
+ ['dou2','Marque distributeur',2,'400 ml',0.4,1.45,'',4.2]]),
+F('dentifrice','hygiene','🪥','Dentifrice protection caries','L',[
+ ['dent3','Grande marque',3,'75 ml',0.075,2.90,'',4.5],
+ ['dent2','Marque distributeur',2,'75 ml',0.075,1.20,'',4.2]]),
+F('essuie','hygiene','🧻','Essuie-tout','rouleau',[
+ ['ess3','Grande marque',3,'x4',4,4.20,'',4.3],
+ ['ess2','Marque distributeur',2,'x4',4,2.40,'',4.1]]),
+F('pizza','surgele','🍕','Pizza 4 fromages','kg',[
+ ['piz3','Grande marque',3,'400 g',0.4,4.20,'C',4.4],
+ ['piz2','Marque distributeur',2,'400 g',0.4,2.35,'C',4.1]]),
+F('frites','surgele','🍟','Frites surgelées','kg',[
+ ['fri3','Grande marque',3,'1 kg',1,3.10,'B',4.4],
+ ['fri2','Marque distributeur',2,'1 kg',1,1.85,'B',4.2],
+ ['fri2g','Marque distributeur — 2,5 kg',2,'2,5 kg',2.5,3.90,'B',4.2]]),
+F('nuggets','surgele','🍗','Nuggets de poulet','kg',[
+ ['nug3','Grande marque',3,'x20 · 400 g',0.4,5.20,'C',4.3],
+ ['nug2','Marque distributeur',2,'x20 · 400 g',0.4,3.20,'C',4.1]]),
+F('chips','snack','🥔','Chips nature','kg',[
+ ['chi3','Grande marque',3,'150 g',0.15,2.20,'D',4.4],
+ ['chi2','Marque distributeur',2,'150 g',0.15,1.10,'D',4.1]]),
+F('biscuits','snack','🍪','Biscuits sablés','kg',[
+ ['bis3','Grande marque',3,'200 g',0.2,2.60,'D',4.4],
+ ['bis2','Marque distributeur',2,'200 g',0.2,1.30,'D',4.2]])
+];
+
+let FAMILIES=DEMO_FAMILIES, FBY={}, PRODUCTS=[], PBY={}, SBY={}, LIVE=null;
+const TIERS={1:'Premier prix',2:'Marque distributeur',3:'Grande marque',4:'Premium / Bio'};
+
+/* ---------- MAGASINS ---------- */
+const S=(id,name,color,px,dist,prep,fee,min,rate,open,close,tag,noPP,noBio)=>
+ ({id,name,color,px,dist,prep,fee,min,rate,open,close,tag,noPP:!!noPP,noBio:!!noBio});
+const DEMO_STORES=[
+ S('coin','Épicerie du Coin','#7c4dff',1.22,0.3,6,1.50,8,4.7,0,24,'Ouvert 24h/24',true,true),
+ S('city','Carrefour City','#1e63d0',1.12,0.4,8,1.90,10,4.3,7,23,'Ouvert tard'),
+ S('franprix','Franprix','#e2231a',1.14,0.6,8,1.90,10,4.1,7,23,'Ouvert tard'),
+ S('express','Carrefour Express','#0f6fd6',1.10,0.7,9,2.20,10,4.2,7,22,null),
+ S('casino','Casino Shop','#00843d',1.15,0.9,10,2.20,10,4.0,7,22,null),
+ S('auchango','Auchan Go','#d40511',1.02,1.1,11,2.50,12,4.4,8,22,null),
+ S('lidl','Lidl','#0050aa',0.87,1.2,12,2.90,15,4.5,8,20,'Prix bas',false,true),
+ S('monoprix','Monoprix','#0a2d6e',1.22,1.5,15,3.50,20,4.6,9,21,null,true),
+ S('intermarche','Intermarché Express','#e3000f',0.96,1.8,16,2.90,15,4.3,8,20,null),
+ S('naturalia','Naturalia','#3d8b37',1.32,1.9,17,3.40,20,4.4,9,20,'Bio',true),
+ S('aldi','Aldi','#00539f',0.84,2.1,18,3.20,15,4.2,8,20,'Prix bas',false,true),
+ S('grandfrais','Grand Frais','#f07d00',1.04,2.6,22,3.90,25,4.7,8,20,'Spécial frais',true)
+];
+let STORES=DEMO_STORES;
+function indexData(){FBY={};PRODUCTS=[];PBY={};SBY={};
+ FAMILIES.forEach(f=>{FBY[f.id]=f;f.vars.forEach(v=>{PRODUCTS.push(v);PBY[v.id]=v})});
+ STORES.forEach(s=>SBY[s.id]=s)}
+indexData();
+
+const QUICKLISTS=[
+ {id:'bebe',em:'🍼',name:'Panier bébé du soir',desc:'Couches, lait, lingettes, compotes',items:['couches','laitinf','lingettes','compote']},
+ {id:'depannage',em:'🌙',name:'Dépannage dernière minute',desc:'Ce qui manque toujours à 21 h',items:['pain','lait','oeufs','pq','pates']},
+ {id:'senior',em:'🧡',name:"L'essentiel de la semaine",desc:'Simple, livré et monté chez vous',items:['pain','lait','oeufs','beurre','yaourt','banane','jambon','soupe','eau']},
+ {id:'petitdej',em:'☕',name:'Petit-déj oublié',desc:'Café, jus, céréales, pain',items:['cafe','jus','cereales','pain']},
+ {id:'apero',em:'🥨',name:'Apéro improvisé',desc:'Invités surprise dans 30 minutes',items:['chips','choco','biscuits','cola']},
+ {id:'diner',em:'🍝',name:'Dîner express',desc:'Un repas complet en 15 minutes',items:['pates','sauce','rape','pizza']}
+];
+const PROFILS=[
+ {id:'parent',em:'👶',name:'Parent de jeunes enfants',desc:"Les imprévus n'attendent pas 8 h du matin"},
+ {id:'senior',em:'🧓',name:'Senior ou mobilité réduite',desc:'Courses montées à la porte, texte agrandi'},
+ {id:'actif',em:'💼',name:'Actif pressé',desc:'Commande le midi, livré en rentrant'},
+ {id:'autre',em:'🛒',name:'Juste des courses',desc:'Le plus vite et le moins cher possible'}];
+const CRENEAUX=[
+ {id:'asap',name:'Au plus vite',desc:''},{id:'1h',name:'Dans 1 heure',desc:'Vous choisissez votre moment'},
+ {id:'soir',name:'Ce soir, 19 h – 20 h',desc:'Idéal en rentrant du travail'},
+ {id:'demain',name:'Demain matin, 8 h – 10 h',desc:'Livraison programmée'}];
+const PAIEMENTS=[
+ {id:'cb',em:'💳',name:'Carte •• 4417',desc:'Paiement enregistré'},
+ {id:'mob',em:'📱',name:'Paiement mobile',desc:'Validation par empreinte'},
+ {id:'esp',em:'💶',name:'Espèces à la livraison',desc:'Appoint apprécié'},
+ {id:'tr',em:'🎫',name:'Titres-restaurant',desc:'Produits alimentaires uniquement'}];
+
+const FRAIS_SERVICE=1.49, FRAIS_PETITE=2.50, FRAIS_MONTEE=2.00;
+
+/* ---------- ÉTAT ---------- */
+let state={view:'home',profil:null,adresse:null,geo:null,storeId:null,cat:'essentiels',q:'',qStore:'',
+ cart:{storeId:null,items:{}},creneau:'asap',paiement:'cb',
+ opts:{porte:false,montee:false,appel:true,substitution:true},pourboire:0,comfort:false,
+ economie:true, eco:0, ecoPanier:0, orders:[],current:null,filtre:'tous',nudge:null};
+
+const KEY='minute.v2';
+function save(){try{localStorage.setItem(KEY,JSON.stringify({profil:state.profil,adresse:state.adresse,cart:state.cart,
+ comfort:state.comfort,economie:state.economie,eco:state.eco,ecoPanier:state.ecoPanier,
+ orders:state.orders.slice(0,10),current:state.current,opts:state.opts}))}catch(e){}}
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return;const d=JSON.parse(r)||{};
+ ['profil','adresse','comfort','eco','ecoPanier'].forEach(k=>{if(d[k]!==undefined)state[k]=d[k]});
+ if(typeof d.economie==='boolean')state.economie=d.economie;
+ if(d.cart&&d.cart.items)state.cart=d.cart;
+ if(Array.isArray(d.orders))state.orders=d.orders;
+ if(d.current)state.current=d.current;
+ if(d.opts)state.opts=Object.assign(state.opts,d.opts);}catch(e){}}
+
+/* ---------- OUTILS ---------- */
+const $=s=>document.querySelector(s);
+const eur=n=>n.toFixed(2).replace('.',',')+' €';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hash(s){let h=0;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h)}
+function ouvert(s){const h=new Date().getHours()+new Date().getMinutes()/60;return s.close>=24?true:(h>=s.open&&h<s.close)}
+function etaMin(s){return Math.round(s.prep+s.dist*4)}
+function eta(s){const t=etaMin(s);return t+'–'+(t+8)}
+function prix(sid,pid){const p=PBY[pid],s=SBY[sid];
+  if(p.prices&&p.prices[sid])return p.prices[sid].value;   // prix réellement relevé en magasin
+  let px=s.px; if(p.tier<=2) px=1+(s.px-1)*0.55;            // les MDD suivent moins l'enseigne
+  return Math.round(p.price*px*20)/20}
+function dispo(sid,pid){const p=PBY[pid],s=SBY[sid];
+  if(LIVE)return !!(p.prices&&p.prices[sid]);              // en direct : dispo = prix relevé ici
+  if(p.tier===1&&s.noPP)return false;                        // pas de premier prix chez les enseignes premium
+  if(p.tier===4&&s.noBio)return false;                       // pas de premium chez les hard-discounters
+  if(hash(sid+'|'+pid)%23===0)return false;                  // rupture ponctuelle
+  return true}
+function dispoVars(sid,fid){return FBY[fid].vars.filter(v=>dispo(sid,v.id))}
+function uPrice(sid,v){return prix(sid,v.id)/v.qty}
+function fmtU(sid,v){const u=uPrice(sid,v);
+  return (u<0.1? (u*100).toFixed(1).replace('.',',')+' ct':u.toFixed(2).replace('.',','))+' €/'+v.unit}
+const NG=n=>n?('ABCDE'.indexOf(n)):-1;
+/* Provenance du prix : relevé daté en magasin, ou estimation. */
+function releve(sid,pid){const p=PBY[pid];
+ if(p&&p.prices&&p.prices[sid]){const d=new Date(p.prices[sid].date);
+  return ' · <span style="color:var(--deal)">relevé le '+d.toLocaleDateString('fr-FR')+'</span>'}
+ return LIVE?' · <span style="color:var(--muted)">prix estimé</span>':' · ⭐ '+(p?p.rate.toFixed(1).replace('.',','):'')}
+
+/* --- cœur du comparateur : le moins cher à qualité équivalente --- */
+function qualiteOK(cand,ref){
+  const seuil=(cand.cat==='bebe')?4.2:4.0;                         // on est plus exigeant sur le rayon bébé
+  if(cand.rate<seuil)return false;                                 // jamais un produit mal noté
+  if(ref.nutri&&cand.nutri&&NG(cand.nutri)>NG(ref.nutri))return false; // jamais un Nutri-Score dégradé
+  return true}
+function meilleur(sid,fid,ref){
+  const l=dispoVars(sid,fid).filter(v=>qualiteOK(v,ref||FBY[fid].vars[0]));
+  if(!l.length)return null;
+  return l.sort((a,b)=>uPrice(sid,a)-uPrice(sid,b))[0]}
+function reference(sid,fid){ // la version « réflexe » : grande marque, sinon la plus chère dispo
+  const l=dispoVars(sid,fid); if(!l.length)return null;
+  return l.find(v=>v.tier===3)||l.sort((a,b)=>uPrice(sid,b)-uPrice(sid,a))[0]}
+function recommande(sid,fid){ // ce qu'on affiche par défaut en rayon
+  const ref=reference(sid,fid); if(!ref)return null;
+  return state.economie?(meilleur(sid,fid,ref)||ref):ref}
+function economiePct(sid,a,b){return Math.round((1-uPrice(sid,a)/uPrice(sid,b))*100)}
+function critères(sid,cand,ref){
+  const c=[];
+  c.push(cand.qty>=ref.qty?'Contenance ≥':'Même usage');
+  if(cand.nutri&&ref.nutri)c.push(NG(cand.nutri)<NG(ref.nutri)?('Nutri-Score '+cand.nutri+' — meilleur'):('Nutri-Score '+cand.nutri+' identique'));
+  c.push('Noté '+cand.rate.toFixed(1).replace('.',',')+'/5');
+  if(cand.fam==='laitinf')c.push('Composition encadrée par la réglementation');
+  return c}
+/* --- équivalent moins cher d'un produit précis (pour un article du panier) --- */
+function altMoinsCher(sid,pid){
+  const cur=PBY[pid], b=meilleur(sid,cur.fam,cur);
+  if(!b||b.id===pid)return null;
+  const g=uPrice(sid,cur)-uPrice(sid,b);
+  if(g<=0)return null;
+  if(economiePct(sid,b,cur)<8)return null;                      // on ne dérange pas pour 3 %
+  return {alt:b,pctUnit:economiePct(sid,b,cur)}}
+
+/* ---------- PANIER ---------- */
+function nbArticles(){return Object.values(state.cart.items).reduce((a,b)=>a+b,0)}
+function sousTotal(){if(!state.cart.storeId)return 0;
+  return Object.entries(state.cart.items).reduce((a,[p,q])=>a+prix(state.cart.storeId,p)*q,0)}
+function totaux(){const st=sousTotal(),s=SBY[state.cart.storeId];
+  const liv=s?s.fee:0, petite=(s&&st>0&&st<s.min)?FRAIS_PETITE:0,
+  montee=state.opts.montee?FRAIS_MONTEE:0, serv=st>0?FRAIS_SERVICE:0;
+  return{st,liv,petite,montee,serv,pourboire:state.pourboire,total:st+liv+petite+montee+serv+state.pourboire}}
+let toastT;
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),2100)}
+function heurePlus(m){const d=new Date(Date.now()+m*60000);return d.getHours()+' h '+String(d.getMinutes()).padStart(2,'0')}
+
+function add(pid,silent){
+  const sid=state.storeId||state.cart.storeId;
+  if(state.cart.storeId&&state.cart.storeId!==sid&&nbArticles()>0){
+    if(!confirm('Votre panier vient de '+SBY[state.cart.storeId].name+'. Le vider ?'))return;
+    state.cart.items={};state.ecoPanier=0}
+  state.cart.storeId=sid;
+  state.cart.items[pid]=(state.cart.items[pid]||0)+1;
+  if(!silent){const a=altMoinsCher(sid,pid);
+    state.nudge=a?{pid,alt:a.alt.id,pct:a.pctUnit}:null;
+    if(state.nudge)setTimeout(()=>{if(state.nudge&&state.nudge.pid===pid){state.nudge=null;render()}},9000)}
+  save();render()}
+function sub(pid){if(!state.cart.items[pid])return;state.cart.items[pid]--;
+  if(state.cart.items[pid]<=0)delete state.cart.items[pid];
+  if(nbArticles()===0){state.cart.storeId=null;state.ecoPanier=0}
+  save();render()}
+function viderPanier(){state.cart={storeId:null,items:{}};state.pourboire=0;state.ecoPanier=0;save();render()}
+
+/* remplacement d'un article par son équivalent moins cher */
+function remplacer(pid,altId,q){
+  const sid=state.cart.storeId||state.storeId;
+  const n=q||state.cart.items[pid]||1;
+  const gain=(prix(sid,pid)-prix(sid,altId))*n;
+  delete state.cart.items[pid];
+  state.cart.items[altId]=(state.cart.items[altId]||0)+n;
+  if(gain>0){state.ecoPanier+=gain;state.eco+=gain}
+  state.nudge=null;save();render();closeSheet();
+  toast(gain>0?('Remplacé — '+eur(gain)+' économisés'):'Produit remplacé')}
+
+function optimisations(){
+  const sid=state.cart.storeId;if(!sid)return[];
+  const out=[];
+  Object.entries(state.cart.items).forEach(([pid,q])=>{
+    const a=altMoinsCher(sid,pid);
+    if(a){const gain=(prix(sid,pid)-prix(sid,a.alt.id))*q;
+      if(gain>0.05)out.push({pid,alt:a.alt,q,gain,pct:a.pctUnit})}});
+  return out.sort((x,y)=>y.gain-x.gain)}
+function optimiserTout(){
+  const l=optimisations();if(!l.length){toast('Votre panier est déjà au meilleur prix');return}
+  let g=0;l.forEach(o=>{const n=state.cart.items[o.pid]||o.q;delete state.cart.items[o.pid];
+    state.cart.items[o.alt.id]=(state.cart.items[o.alt.id]||0)+n;g+=o.gain});
+  state.ecoPanier+=g;state.eco+=g;save();render();
+  toast('Panier optimisé — '+eur(g)+' économisés')}
+
+/* comparaison du même panier dans les autres enseignes */
+function paniertAilleurs(){
+  if(!state.cart.storeId)return[];
+  const fams=Object.entries(state.cart.items).map(([pid,q])=>({fam:PBY[pid].fam,tier:PBY[pid].tier,q}));
+  return STORES.filter(ouvert).map(s=>{
+    let tot=0,manque=0;
+    fams.forEach(f=>{const ref=reference(s.id,f.fam);
+      const v=state.economie?(meilleur(s.id,f.fam,ref)||ref):(dispoVars(s.id,f.fam).find(x=>x.tier===f.tier)||ref);
+      if(!v){manque++;return}tot+=prix(s.id,v.id)*f.q});
+    return{s,tot,all:tot+s.fee+FRAIS_SERVICE,manque}
+  }).sort((a,b)=>a.all-b.all)}
+function basculerMagasin(sid){
+  const fams=Object.entries(state.cart.items).map(([pid,q])=>({fam:PBY[pid].fam,q}));
+  const items={};let ok=0;
+  fams.forEach(f=>{const ref=reference(sid,f.fam);const v=state.economie?(meilleur(sid,f.fam,ref)||ref):ref;
+    if(v){items[v.id]=(items[v.id]||0)+f.q;ok++}});
+  state.cart={storeId:sid,items};state.storeId=sid;save();render();closeSheet();
+  toast('Panier transféré chez '+SBY[sid].name)}
+
+function lancerListe(qid){
+  const ql=QUICKLISTS.find(q=>q.id===qid);
+  let best=null,bs=-1e9;
+  STORES.filter(ouvert).forEach(s=>{
+    let tot=0,n=0;
+    ql.items.forEach(f=>{const ref=reference(s.id,f);const v=meilleur(s.id,f,ref)||ref;if(v){tot+=prix(s.id,v.id);n++}});
+    const sc=n*8-tot-s.fee-etaMin(s)/6;
+    if(sc>bs){bs=sc;best=s}});
+  if(!best)best=STORES[0];
+  const items={};
+  ql.items.forEach(f=>{const ref=reference(best.id,f);const v=(state.economie?meilleur(best.id,f,ref):ref)||ref;if(v)items[v.id]=1});
+  state.cart={storeId:best.id,items};state.storeId=best.id;state.ecoPanier=0;state.view='cart';
+  save();render();toast(Object.keys(items).length+' articles ajoutés chez '+best.name)}
+
+/* ---------- NAV / FEUILLES ---------- */
+function go(v,o){if(v==='store'&&o){state.storeId=o;state.cat='essentiels';state.qStore=''}state.view=v;state.nudge=null;window.scrollTo(0,0);render()}
+function setComfort(v){state.comfort=v;save();render()}
+function setEconomie(v){state.economie=v;save();render();toast(v?'Mode économies activé — le moins cher est proposé en premier':'Mode économies désactivé')}
+function toggleTheme(){const c=document.documentElement.getAttribute('data-theme');
+  const d=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme',c?(c==='dark'?'light':'dark'):(d?'light':'dark'))}
+function openSheet(h){$('#sheet').innerHTML='<div class="grab"></div>'+h;$('#sheet').classList.add('on');$('#sheetbg').classList.add('on')}
+function closeSheet(){$('#sheet').classList.remove('on');$('#sheetbg').classList.remove('on')}
+
+function sheetAdresse(){openSheet(`
+ <h3 style="margin:0 0 4px;font-size:1.12em">Où livrer vos courses ?</h3>
+ <p class="sub" style="margin:0 0 14px">Seuls les magasins qui livrent cette adresse sont affichés.</p>
+ <button class="btn" onclick="geoloc()">📍 Utiliser ma position actuelle</button>
+ <div style="text-align:center;color:var(--muted);font-size:.8em;margin:12px 0">ou</div>
+ <input class="field" id="adrIn" placeholder="12 rue des Lilas, 3ᵉ étage…" value="${esc(state.adresse||'')}">
+ <input class="field" id="cplIn" placeholder="Digicode, bâtiment, interphone (facultatif)">
+ <button class="btn" style="margin-top:12px" onclick="validAdresse()">Enregistrer</button>`);
+ setTimeout(()=>{const e=$('#adrIn');if(e)e.focus()},250)}
+function validAdresse(){const v=$('#adrIn').value.trim();if(!v){toast('Indiquez une adresse');return}
+ state.adresse=v;save();closeSheet();render();toast('Adresse enregistrée')}
+function geoloc(){if(!navigator.geolocation){toast('Géolocalisation indisponible');return}
+ toast('Localisation en cours…');
+ navigator.geolocation.getCurrentPosition(p=>{state.geo={acc:Math.round(p.coords.accuracy)};
+  state.adresse='Ma position actuelle';save();closeSheet();render();toast('Position détectée (± '+state.geo.acc+' m)')},
+  ()=>toast('Position refusée — saisissez une adresse'),{enableHighAccuracy:true,timeout:8000})}
+
+/* ---------- FEUILLE COMPARATEUR ---------- */
+function sheetCompare(fid,sid){
+  sid=sid||state.storeId||state.cart.storeId;
+  const f=FBY[fid], ref=reference(sid,fid), vars=dispoVars(sid,fid).slice().sort((a,b)=>uPrice(sid,a)-uPrice(sid,b));
+  const best=vars[0];
+  const ailleurs=STORES.filter(s=>ouvert(s)&&s.id!==sid).map(s=>{
+      const r=reference(s.id,fid),b=meilleur(s.id,fid,r);return b?{s,v:b,u:uPrice(s.id,b)}:null})
+    .filter(Boolean).sort((a,b)=>a.u-b.u).slice(0,3);
+  openSheet(`
+   <div class="row" style="margin-bottom:4px"><span style="font-size:1.7em">${f.em}</span>
+     <span><b style="font-size:1.1em;display:block">${esc(f.name)}</b>
+     <span class="sub">${vars.length} versions équivalentes chez ${esc(SBY[sid].name)}</span></span></div>
+   <p class="sub" style="margin:10px 0 14px">Classées du moins cher au plus cher <b>au ${f.unit}</b> — c'est la seule comparaison honnête entre des formats différents.</p>
+   ${vars.map(v=>{
+     const cur=(state.cart.items[v.id]||0)>0, isBest=v.id===best.id, pct=ref&&v.id!==ref.id?economiePct(sid,v,ref):0;
+     return `<div class="varrow ${isBest?'best':cur?'cur':''}">
+       <span class="info">
+         <b>${esc(v.label)}</b>
+         <span class="u">${esc(v.size)} · ${fmtU(sid,v)}</span>
+         <span class="crit">
+           ${isBest?'<span class="pill deal">🏆 Meilleur rapport</span>':''}
+           ${cur?'<span class="pill green">Dans le panier</span>':''}
+           ${pct>0?`<span class="pill deal">−${pct} %</span>`:''}
+           ${v.nutri?`<span class="pill">Nutri ${v.nutri}</span>`:''}
+           <span class="pill">⭐ ${v.rate.toFixed(1).replace('.',',')}</span>
+           <span class="pill">${TIERS[v.tier]}</span>
+         </span>
+       </span>
+       <span style="text-align:right">
+         <span class="price" style="display:block">${eur(prix(sid,v.id))}</span>
+         <button class="btn sm ${isBest?'deal':'sec'}" style="margin-top:6px" onclick="choisirVariante('${v.id}','${fid}')">Choisir</button>
+       </span></div>`}).join('')}
+
+   ${ref&&best.id!==ref.id?`<div class="card" style="padding:13px;margin:6px 0 14px;border-color:var(--deal)">
+      <b style="font-size:.93em;color:var(--deal)">Pourquoi c'est un vrai équivalent</b>
+      <div class="crit">${critères(sid,best,ref).map(c=>`<span class="pill deal">✓ ${c}</span>`).join('')}</div>
+      <p class="sub" style="margin:8px 0 0">Économie : <b>${eur(prix(sid,ref.id)-prix(sid,best.id))}</b> sur cet article, soit ${economiePct(sid,best,ref)} % au ${f.unit}.</p>
+    </div>`:''}
+
+   ${ailleurs.length?`<div class="h2" style="margin:8px 0 8px">Ailleurs autour de vous</div>
+     ${ailleurs.map(a=>`<div class="varrow">
+       <span class="slogo" style="width:38px;height:38px;flex:0 0 38px;border-radius:11px;font-size:.78em;background:${a.s.color}">${esc(a.s.name.split(' ')[0].slice(0,2).toUpperCase())}</span>
+       <span class="info"><b>${esc(a.s.name)}</b><span class="u">${esc(a.v.label)} · ${a.s.dist.toFixed(1)} km · livraison ${eur(a.s.fee)}</span></span>
+       <span style="text-align:right"><span class="price" style="display:block">${eur(prix(a.s.id,a.v.id))}</span>
+       <span class="sub" style="font-size:.74em">${fmtU(a.s.id,a.v)}</span></span></div>`).join('')}
+     <p class="sub" style="font-size:.78em;margin:2px 0 0">Changer d'enseigne pour un seul article est rarement rentable : pensez aux frais de livraison.</p>`:''}
+  `)}
+function choisirVariante(vid,fid){
+  const sid=state.storeId||state.cart.storeId;
+  const dansPanier=FBY[fid].vars.find(v=>(state.cart.items[v.id]||0)>0);
+  if(dansPanier&&dansPanier.id!==vid){remplacer(dansPanier.id,vid,state.cart.items[dansPanier.id]);return}
+  state.storeId=sid;add(vid,true);closeSheet();toast('Ajouté au panier')}
+
+/* ---------- VUES ---------- */
+function vOnboarding(){return`<div class="ob">
+ <div class="logo" style="font-size:1.35em"><span class="dot">⏱</span> Minute</div>
+ <div class="big">Vos courses urgentes.<br>Toujours au meilleur prix.</div>
+ <p class="sub" style="margin:0 0 20px">Toutes les épiceries autour de vous — Lidl, Carrefour City, Franprix, Monoprix, Aldi… — livrées en moins de 30 minutes. Et à chaque produit, l'app vous montre l'équivalent moins cher qui répond au même besoin.</p>
+ <div style="font-weight:700;margin-bottom:10px">Qui êtes-vous ? On adapte l'appli.</div>
+ ${PROFILS.map(p=>`<button class="profcard ${state.profil===p.id?'on':''}" onclick="choisirProfil('${p.id}')">
+   <span class="ic">${p.em}</span><span class="info"><b>${p.name}</b><span>${p.desc}</span></span></button>`).join('')}
+ <p class="sub" style="text-align:center;margin-top:14px;font-size:.77em">Démonstration — aucun paiement réel n'est effectué.</p></div>`}
+function choisirProfil(id){state.profil=id;
+ if(id==='senior'){state.comfort=true;state.opts.montee=true}
+ if(id==='actif')state.creneau='soir';
+ state.view='home';save();render()}
+
+function topbar(){return`<div class="topbar"><div class="topbar-in">
+ <div class="brandrow"><div class="logo"><span class="dot">⏱</span> Minute</div>
+ <div style="margin-left:auto;display:flex;gap:8px">
+  <button class="iconbtn" title="Mode économies" onclick="setEconomie(${!state.economie})" style="${state.economie?'background:var(--deal-soft);color:var(--deal)':''}">💶</button>
+  <button class="iconbtn" title="Mode confort" onclick="setComfort(${!state.comfort})">${state.comfort?'🔍':'🔎'}</button>
+  <button class="iconbtn" title="Thème" onclick="toggleTheme()">🌗</button></div></div>
+ <button class="loc" onclick="sheetAdresse()"><span class="pin">📍</span>
+  <span class="txt"><span class="lbl">Livrer à</span><span class="val">${state.adresse?esc(state.adresse):'Définir mon adresse'}</span></span>
+  <span class="iconbtn">✎</span></button></div></div>`}
+
+function vHome(){
+ let list=STORES.slice();
+ if(state.filtre==='rapide')list=list.filter(s=>etaMin(s)<=12);
+ if(state.filtre==='pascher')list=list.filter(s=>s.px<1);
+ if(state.filtre==='ouvert')list=list.filter(ouvert);
+ if(state.q)list=list.filter(s=>s.name.toLowerCase().includes(state.q.toLowerCase()));
+ list.sort((a,b)=>(ouvert(b)-ouvert(a))||(etaMin(a)-etaMin(b)));
+ const qls=state.profil==='parent'?reorder(QUICKLISTS,'bebe'):state.profil==='senior'?reorder(QUICKLISTS,'senior')
+   :state.profil==='actif'?reorder(QUICKLISTS,'diner'):QUICKLISTS;
+ return topbar()+`<div class="pad">
+ <div class="search"><span>🔍</span><input placeholder="Chercher un magasin…" value="${esc(state.q)}" oninput="state.q=this.value;render()"></div>
+ ${state.current?`<button class="hero" onclick="go('track')"><b>🛵 Commande en cours — ${esc(SBY[state.current.storeId].name)}</b>
+   <p>Suivre la livraison · arrivée vers ${esc(state.current.arriveeTxt)}</p></button>`:''}
+ ${state.eco>0?`<div class="ecohero"><b>💶 ${eur(state.eco)} économisés avec Minute</b>
+   <p style="margin:4px 0 0;font-size:.84em;opacity:.92">En choisissant les équivalents moins chers proposés par l'app.</p></div>`:''}
+
+ <div class="h2">Besoin urgent ? Un panier prêt<span class="sub" style="font-weight:600">${STORES.filter(ouvert).length} ouverts</span></div>
+ <div class="scroll-x">${qls.map(q=>`<button class="ql" onclick="lancerListe('${q.id}')"><span class="em">${q.em}</span>
+   <b>${q.name}</b><span>${q.desc}</span><span class="go">Au meilleur prix →</span></button>`).join('')}</div>
+
+ <div class="h2">Épiceries autour de vous</div>
+ <div class="scroll-x" style="margin-bottom:12px">${[['tous','Tous'],['ouvert','Ouvert maintenant'],['rapide','Moins de 15 min'],['pascher','Prix bas']]
+   .map(([i,n])=>`<button class="cattab ${state.filtre===i?'on':''}" onclick="state.filtre='${i}';render()">${n}</button>`).join('')}</div>
+ ${list.length?list.map(storeCard).join(''):'<div class="empty"><span class="em">🔍</span>Aucun magasin ne correspond.</div>'}
+ <p class="sub" style="text-align:center;margin:20px 0 6px;font-size:.77em">Prix, Nutri-Scores et disponibilités indicatifs · données de démonstration</p></div>`}
+function reorder(a,id){const i=a.findIndex(x=>x.id===id);if(i<1)return a;const c=a.slice();const[x]=c.splice(i,1);c.unshift(x);return c}
+
+function storeCard(s){const o=ouvert(s);
+ return`<button class="store ${o?'':'closed'}" onclick="${o?`go('store','${s.id}')`:`toast('Ouvre à ${s.open} h')`}">
+ <div class="row"><span class="slogo" style="background:${s.color}">${esc(s.name.split(' ')[0].slice(0,2).toUpperCase())}</span>
+ <span style="flex:1;min-width:0"><span class="nm">${esc(s.name)}${s.px<1?' <span class="pill deal">€ prix bas</span>':''}</span>
+ <span class="sub">${s.dist.toFixed(1)} km · ⭐ ${s.rate.toFixed(1).replace('.',',')} · minimum ${eur(s.min)}</span>
+ <span class="meta">${o?'<span class="pill green">Ouvert</span>':`<span class="pill red">Fermé · ouvre à ${s.open} h</span>`}
+ ${s.tag?`<span class="pill orange">${s.tag}</span>`:''}<span class="pill">Livraison ${eur(s.fee)}</span></span></span>
+ <span class="eta"><b>${eta(s)}</b><span>min</span></span></div></button>`}
+
+function vStore(){
+ const s=SBY[state.storeId], q=state.qStore.toLowerCase();
+ let fams=FAMILIES.filter(f=>q?f.name.toLowerCase().includes(q):f.cat===state.cat);
+ return`<div class="pad">
+ <button class="back" onclick="go('home')">← Tous les magasins</button>
+ <div class="card" style="padding:14px;margin-bottom:12px">
+  <div class="row"><span class="slogo" style="background:${s.color}">${esc(s.name.split(' ')[0].slice(0,2).toUpperCase())}</span>
+  <span style="flex:1;min-width:0"><span class="nm" style="font-size:1.08em">${esc(s.name)}</span>
+  <span class="sub">${s.dist.toFixed(1)} km · ⭐ ${s.rate.toFixed(1).replace('.',',')} · ${s.open}h–${s.close>=24?'24h':s.close+'h'}</span></span>
+  <span class="eta"><b>${eta(s)}</b><span>min</span></span></div>
+  <div class="meta"><span class="pill">Livraison ${eur(s.fee)}</span><span class="pill">Minimum ${eur(s.min)}</span>
+  ${s.tag?`<span class="pill orange">${s.tag}</span>`:''}</div></div>
+
+ <div class="opt card" style="margin-bottom:12px;border-radius:var(--radius)" onclick="setEconomie(${!state.economie})">
+  <span class="info"><b>💶 Mode économies</b><span>${state.economie?"L'équivalent le moins cher est proposé en premier, à qualité vérifiée":'Les grandes marques sont affichées par défaut'}</span></span>
+  <span class="sw ${state.economie?'on':''}"><i></i></span></div>
+
+ <div class="search" style="margin-bottom:10px"><span>🔍</span>
+  <input placeholder="Chercher un produit…" value="${esc(state.qStore)}" oninput="state.qStore=this.value;render()"></div>
+ ${q?'':`<div class="scroll-x">${CATS.map(c=>`<button class="cattab ${state.cat===c.id?'on':''}" onclick="state.cat='${c.id}';render()">${c.em} ${c.name}</button>`).join('')}</div>`}
+ <div style="margin-top:10px">${fams.length?fams.map(f=>famRow(f,s)).join(''):'<div class="empty"><span class="em">🤷</span>Aucun produit trouvé.</div>'}</div></div>`}
+
+function famRow(f,s){
+ const v=recommande(s.id,f.id);
+ if(!v)return`<div class="prod" style="opacity:.5"><div class="row"><span class="em">${f.em}</span>
+   <span class="info"><b>${esc(f.name)}</b><span class="vl">Indisponible dans ce magasin</span></span></div></div>`;
+ const ref=reference(s.id,f.id), nv=dispoVars(s.id,f.id).length;
+ const pct=ref&&ref.id!==v.id?economiePct(s.id,v,ref):0;
+ const q=state.cart.items[v.id]||0;
+ const inFam=f.vars.find(x=>(state.cart.items[x.id]||0)>0);
+ const other=inFam&&inFam.id!==v.id?inFam:null;
+ const show=other||v, qs=state.cart.items[show.id]||0;
+ const altInfo=other?altMoinsCher(s.id,other.id):null;
+ return`<div class="prod">
+  <div class="row">${show.image?`<img class="em" src="${esc(show.image)}" alt="" style="object-fit:contain;background:#fff">`:`<span class="em">${f.em}</span>`}
+   <span class="info"><b>${esc(f.name)}</b>
+     <span class="vl">${esc(show.label)} · ${esc(show.size)}</span>
+     <span class="vl"><b style="color:var(--text)">${fmtU(s.id,show)}</b>${show.nutri?' · Nutri '+show.nutri:''}${releve(s.id,show.id)}</span>
+   </span>
+   <span style="text-align:right">
+    ${pct>0&&!other?`<span class="was" style="display:block">${eur(prix(s.id,ref.id))}</span>`:''}
+    <span class="price">${eur(prix(s.id,show.id))}</span>
+   </span>
+   ${qs>0?`<span class="qty"><button onclick="sub('${show.id}')">−</button><b>${qs}</b><button onclick="add('${show.id}')">+</button></span>`
+        :`<button class="addbtn" onclick="add('${show.id}')">+</button>`}
+  </div>
+  ${pct>0&&!other?`<div class="crit"><span class="pill deal">−${pct} % vs ${esc(ref.label.toLowerCase())}</span>
+     <span class="pill">✓ ${esc(critères(s.id,v,ref)[0])}</span><span class="pill">✓ ${esc(critères(s.id,v,ref)[1]||'Même usage')}</span></div>`:''}
+  ${altInfo?`<div class="crit"><span class="pill deal">💡 Équivalent à −${altInfo.pctUnit} % disponible</span></div>`:''}
+  ${nv>1?`<button class="compare" onclick="sheetCompare('${f.id}','${s.id}')">⚖️ Comparer les ${nv} versions — du moins cher au ${f.unit} →</button>`:''}
+ </div>`}
+
+function vCart(){
+ if(!state.cart.storeId||nbArticles()===0)
+  return`<div class="pad"><button class="back" onclick="go('home')">← Retour</button>
+   <div class="empty"><span class="em">🛒</span><b>Votre panier est vide</b>
+   <p class="sub">Choisissez un panier prêt ou une épicerie près de chez vous.</p>
+   <button class="btn" style="margin-top:16px" onclick="go('home')">Voir les épiceries</button></div></div>`;
+ const s=SBY[state.cart.storeId], t=totaux(), opts=optimisations();
+ const gain=opts.reduce((a,o)=>a+o.gain,0);
+ const ail=paniertAilleurs(), moi=ail.find(a=>a.s.id===s.id), best=ail[0];
+ return`<div class="pad">
+ <button class="back" onclick="go('store','${s.id}')">← Continuer mes courses</button>
+ <div class="h1">Mon panier</div>
+ <p class="sub" style="margin:0 0 12px">${esc(s.name)} · livraison estimée ${eta(s)} min</p>
+
+ ${gain>0.05?`<div class="card" style="padding:14px;margin-bottom:12px;border-color:var(--deal);background:var(--deal-soft)">
+   <b style="color:var(--deal)">💶 ${eur(gain)} à économiser sur ce panier</b>
+   <p class="sub" style="margin:4px 0 10px">${opts.length} article${opts.length>1?'s ont':' a'} un équivalent moins cher à qualité vérifiée (contenance, Nutri-Score, note clients).</p>
+   <button class="btn deal" onclick="optimiserTout()">Tout remplacer et économiser ${eur(gain)}</button></div>`:
+  `<div class="card" style="padding:12px;margin-bottom:12px"><b style="font-size:.92em;color:var(--deal)">✓ Panier déjà au meilleur prix disponible ici</b></div>`}
+ ${state.ecoPanier>0?`<p class="pill deal" style="margin-bottom:12px">Déjà ${eur(state.ecoPanier)} économisés sur ce panier</p>`:''}
+
+ <div class="card" style="padding:6px 12px;margin-bottom:14px">
+ ${Object.entries(state.cart.items).map(([pid,q])=>{
+   const p=PBY[pid], a=altMoinsCher(s.id,pid);
+   return`<div style="padding:11px 0;border-bottom:1px solid var(--border)">
+    <div class="row"><span class="em" style="width:40px;height:40px;flex:0 0 40px;border-radius:11px;background:var(--surface-2);display:grid;place-items:center;font-size:1.25em">${p.em}</span>
+    <span style="flex:1;min-width:0"><b style="font-size:.93em;display:block">${esc(p.famName)}</b>
+    <span class="sub">${esc(p.label)} · ${esc(p.size)} · ${fmtU(s.id,p)}</span></span>
+    <span class="price">${eur(prix(s.id,pid)*q)}</span>
+    <span class="qty"><button onclick="sub('${pid}')">−</button><b>${q}</b><button onclick="add('${pid}','s')">+</button></span></div>
+    ${a?`<button class="compare" onclick="remplacer('${pid}','${a.alt.id}',${q})">💡 ${esc(a.alt.label)} — ${eur(prix(s.id,a.alt.id))} · économisez ${eur((prix(s.id,pid)-prix(s.id,a.alt.id))*q)} · Remplacer →</button>`
+      :`<button class="compare" style="background:var(--surface-2);color:var(--muted)" onclick="sheetCompare('${p.fam}','${s.id}')">⚖️ Voir les alternatives</button>`}
+   </div>`}).join('')}
+ <div style="padding:10px 0"><button class="btn ghost" onclick="viderPanier()">Vider le panier</button></div></div>
+
+ ${best&&moi&&best.s.id!==s.id&&(moi.all-best.all)>1?`<div class="card" style="padding:14px;margin-bottom:14px;border-color:var(--accent)">
+   <b style="font-size:.95em">🏪 Le même panier coûte ${eur(moi.all-best.all)} de moins chez ${esc(best.s.name)}</b>
+   <p class="sub" style="margin:4px 0 10px">${eur(best.all)} tout compris (livraison ${eur(best.s.fee)}) contre ${eur(moi.all)} ici · ${best.s.dist.toFixed(1)} km · ${eta(best.s)} min${best.manque?' · '+best.manque+' article(s) sans équivalent':''}</p>
+   <button class="btn sec" onclick="basculerMagasin('${best.s.id}')">Transférer mon panier chez ${esc(best.s.name)}</button>
+   <button class="btn ghost" onclick="sheetComparerMagasins()">Comparer toutes les enseignes</button></div>`:
+  `<button class="btn sec" style="margin-bottom:14px" onclick="sheetComparerMagasins()">🏪 Comparer ce panier dans les autres enseignes</button>`}
+
+ ${t.st<s.min?`<div class="card" style="padding:12px;margin-bottom:14px;border-color:var(--accent)">
+   <b style="font-size:.9em">Ajoutez ${eur(s.min-t.st)} pour éviter les frais de petite commande (${eur(FRAIS_PETITE)})</b></div>`:''}
+
+ <div class="card" style="padding:14px;margin-bottom:14px">
+  <div class="line"><span>Sous-total</span><span>${eur(t.st)}</span></div>
+  <div class="line"><span>Livraison</span><span>${eur(t.liv)}</span></div>
+  ${t.petite?`<div class="line"><span>Frais petite commande</span><span>${eur(t.petite)}</span></div>`:''}
+  <div class="line"><span>Frais de service</span><span>${eur(t.serv)}</span></div>
+  ${t.montee?`<div class="line"><span>Montée à l'étage</span><span>${eur(t.montee)}</span></div>`:''}
+  ${state.ecoPanier>0?`<div class="line eco"><span>Économies réalisées</span><span>− ${eur(state.ecoPanier)}</span></div>`:''}
+  <div class="line total"><span>Total</span><span>${eur(t.total)}</span></div></div>
+ <button class="btn" onclick="go('checkout')">Passer au paiement · ${eur(t.total)}</button></div>`}
+
+function sheetComparerMagasins(){
+ const ail=paniertAilleurs(), cur=state.cart.storeId;
+ openSheet(`<h3 style="margin:0 0 4px;font-size:1.1em">Le même panier, ailleurs</h3>
+ <p class="sub" style="margin:0 0 14px">Total livraison et frais de service compris, avec l'équivalent le moins cher disponible dans chaque enseigne.</p>
+ ${ail.map((a,i)=>`<div class="varrow ${i===0?'best':a.s.id===cur?'cur':''}">
+   <span class="slogo" style="width:40px;height:40px;flex:0 0 40px;border-radius:11px;font-size:.8em;background:${a.s.color}">${esc(a.s.name.split(' ')[0].slice(0,2).toUpperCase())}</span>
+   <span class="info"><b>${esc(a.s.name)}${a.s.id===cur?' · actuel':''}</b>
+   <span class="u">${a.s.dist.toFixed(1)} km · ${eta(a.s)} min · livraison ${eur(a.s.fee)}${a.manque?' · '+a.manque+' manquant(s)':''}</span></span>
+   <span style="text-align:right"><span class="price" style="display:block">${eur(a.all)}</span>
+   ${a.s.id!==cur?`<button class="btn sm ${i===0?'deal':'sec'}" style="margin-top:6px" onclick="basculerMagasin('${a.s.id}')">Choisir</button>`:'<span class="pill green">Ici</span>'}</span></div>`).join('')}
+ <p class="sub" style="font-size:.77em;margin-top:6px">Un panier moins cher dans une enseigne plus lointaine peut aussi être plus long à livrer.</p>`)}
+
+function vCheckout(){
+ const s=SBY[state.cart.storeId], t=totaux();
+ return`<div class="pad"><button class="back" onclick="go('cart')">← Panier</button>
+ <div class="h1">Finaliser la commande</div>
+ <div class="h2">Adresse de livraison</div>
+ <button class="card" style="width:100%;padding:14px" onclick="sheetAdresse()"><div class="row">
+  <span style="width:36px;height:36px;flex:0 0 36px;border-radius:11px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center">📍</span>
+  <span style="flex:1"><b style="display:block;font-size:.94em">${state.adresse?esc(state.adresse):'Adresse à renseigner'}</b>
+  <span class="sub">${state.geo?('Position GPS ± '+state.geo.acc+' m'):'Appuyez pour modifier'}</span></span><span>✎</span></div></button>
+ <div class="h2">Quand ?</div>
+ <div class="card">${CRENEAUX.map(c=>`<button class="radio ${state.creneau===c.id?'on':''}" onclick="state.creneau='${c.id}';render()">
+  <span class="dotr"></span><span class="info"><b>${c.name}${c.id==='asap'?' — vers '+heurePlus(etaMin(s)+8):''}</b>
+  <span>${c.desc||('Livré par '+esc(s.name))}</span></span></button>`).join('')}</div>
+ <div class="h2">Options de livraison</div>
+ <div class="card">
+  ${optRow('montee','Monter les courses chez moi','Dépôt à votre porte (+'+eur(FRAIS_MONTEE)+')')}
+  ${optRow('porte','Laisser devant la porte','Sans contact, photo à l’appui')}
+  ${optRow('appel',"M'appeler à l'arrivée",'Utile en immeuble ou avec un bébé qui dort')}
+  ${optRow('substitution','Autoriser les remplacements','Un produit manquant sera remplacé par un équivalent de même prix ou moins cher')}</div>
+ <div class="h2">Pourboire livreur</div>
+ <div class="scroll-x">${[0,1,2,3,5].map(v=>`<button class="cattab ${state.pourboire===v?'on':''}" onclick="state.pourboire=${v};render()">${v===0?'Aucun':eur(v)}</button>`).join('')}</div>
+ <div class="h2">Paiement</div>
+ <div class="card">${PAIEMENTS.map(p=>`<button class="radio ${state.paiement===p.id?'on':''}" onclick="state.paiement='${p.id}';render()">
+  <span class="dotr"></span><span style="font-size:1.15em">${p.em}</span>
+  <span class="info"><b>${p.name}</b><span>${p.desc}</span></span></button>`).join('')}</div>
+ <div class="card" style="padding:14px;margin-top:16px">
+  <div class="line"><span>Sous-total</span><span>${eur(t.st)}</span></div>
+  <div class="line"><span>Livraison + service</span><span>${eur(t.liv+t.serv+t.petite)}</span></div>
+  ${t.montee?`<div class="line"><span>Montée à l'étage</span><span>${eur(t.montee)}</span></div>`:''}
+  ${t.pourboire?`<div class="line"><span>Pourboire</span><span>${eur(t.pourboire)}</span></div>`:''}
+  ${state.ecoPanier>0?`<div class="line eco"><span>Grâce aux équivalents choisis</span><span>− ${eur(state.ecoPanier)}</span></div>`:''}
+  <div class="line total"><span>Total à payer</span><span>${eur(t.total)}</span></div></div>
+ <button class="btn" style="margin-top:16px" onclick="commander()">Commander · ${eur(t.total)}</button>
+ <p class="sub" style="text-align:center;margin:10px 0 0;font-size:.77em">Démonstration — aucun prélèvement réel.</p></div>`}
+function optRow(k,t,d){return`<div class="opt" onclick="state.opts['${k}']=!state.opts['${k}'];save();render()">
+ <span class="info"><b>${t}</b><span>${d}</span></span><span class="sw ${state.opts[k]?'on':''}"><i></i></span></div>`}
+
+function commander(){
+ if(!state.adresse){sheetAdresse();toast('Renseignez une adresse');return}
+ const s=SBY[state.cart.storeId], t=totaux(), dur=etaMin(s)+8;
+ state.current={id:'MIN-'+(Math.floor(Math.random()*9000)+1000),storeId:s.id,items:Object.assign({},state.cart.items),
+  total:t.total,eco:state.ecoPanier,debut:Date.now(),duree:dur*60000,arriveeTxt:heurePlus(dur),
+  livreur:['Karim','Sofia','Mehdi','Lucie','Yanis'][Math.floor(Math.random()*5)],adresse:state.adresse,
+  date:new Date().toLocaleDateString('fr-FR')};
+ state.cart={storeId:null,items:{}};state.pourboire=0;state.ecoPanier=0;save();go('track')}
+
+function etapeIdx(){if(!state.current)return 0;const p=(Date.now()-state.current.debut)/state.current.duree;
+ return p<0.18?0:p<0.5?1:p<1?2:3}
+function vTrack(){
+ const c=state.current;
+ if(!c)return`<div class="pad"><div class="empty"><span class="em">📦</span>Aucune commande en cours.
+  <button class="btn" style="margin-top:16px" onclick="go('home')">Commander</button></div></div>`;
+ const s=SBY[c.storeId], i=etapeIdx(), pct=Math.min(100,Math.round((Date.now()-c.debut)/c.duree*100));
+ const rest=Math.max(0,Math.ceil((c.debut+c.duree-Date.now())/60000));
+ const n=Object.values(c.items).reduce((a,b)=>a+b,0);
+ const et=[['✓','Commande confirmée',esc(s.name)+' a reçu votre commande'],
+  ['🧺','Préparation en magasin','Vos '+n+' articles sont rassemblés'],
+  ['🛵','Livreur en route',c.livreur+' se dirige vers '+esc(c.adresse)],
+  ['🏠','Livré','Bonne dégustation !']];
+ return`<div class="pad"><div class="h1">${i>=3?'Commande livrée 🎉':'Livraison en cours'}</div>
+ <p class="sub" style="margin:0 0 14px">Commande ${c.id} · ${esc(s.name)}</p>
+ <div class="track"><div class="row"><span style="font-size:1.9em">${i>=3?'🏠':'🛵'}</span>
+  <span style="flex:1"><b style="font-size:1.2em;display:block">${i>=3?'Livré':'Arrivée vers '+c.arriveeTxt}</b>
+  <span class="sub">${i>=3?'Merci et à très vite':'Encore '+rest+' min environ'}</span></span>
+  ${i<3?`<button class="iconbtn" onclick="toast('Appel simulé de ${c.livreur}')">📞</button>`:''}</div>
+  <div class="progressbar"><i style="width:${Math.max(6,pct)}%"></i></div>
+  <div style="margin-top:16px">${et.map((e,k)=>`<div class="step ${k<i?'done':k===i?'now':''}">
+   <span class="bul">${k<=i?e[0]:k+1}</span><span><b>${e[1]}</b><span>${e[2]}</span></span></div>`).join('')}</div></div>
+ ${c.eco>0?`<div class="ecohero" style="margin-top:14px"><b>💶 ${eur(c.eco)} économisés sur cette commande</b>
+  <p style="margin:4px 0 0;font-size:.83em;opacity:.92">Grâce aux équivalents proposés à qualité vérifiée.</p></div>`:''}
+ <div class="card" style="padding:14px;margin-top:14px"><div class="row" style="margin-bottom:8px">
+  <span style="width:40px;height:40px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-size:1.15em">🧑‍🦱</span>
+  <span style="flex:1"><b style="display:block;font-size:.94em">${c.livreur}</b><span class="sub">Votre livreur · ⭐ 4,9</span></span>
+  <button class="pill green" onclick="toast('Message simulé envoyé')">Message</button></div>
+  ${state.opts.montee?'<span class="pill green">📦 Courses montées à votre porte</span> ':''}
+  ${state.opts.porte?'<span class="pill">🚪 Dépôt devant la porte</span>':''}</div>
+ <div class="card" style="padding:14px;margin-top:14px"><b style="font-size:.94em">Détail</b>
+  ${Object.entries(c.items).map(([p,q])=>`<div class="line"><span>${q} × ${esc(PBY[p].famName)} <span class="sub">(${esc(PBY[p].label)})</span></span><span>${eur(prix(c.storeId,p)*q)}</span></div>`).join('')}
+  <div class="line total"><span>Total payé</span><span>${eur(c.total)}</span></div></div>
+ ${i>=3?`<button class="btn" style="margin-top:16px" onclick="cloturer()">Terminer et noter la livraison</button>`
+   :`<button class="btn sec" style="margin-top:16px" onclick="go('home')">Continuer mes courses</button>`}</div>`}
+function cloturer(){state.orders.unshift(state.current);state.current=null;save();go('orders');toast('Merci pour votre commande !')}
+
+function vOrders(){
+ return`<div class="pad"><div class="h1">Mes commandes</div>
+ ${state.eco>0?`<div class="ecohero" style="margin-top:0;margin-bottom:14px"><b>💶 ${eur(state.eco)} économisés au total</b>
+   <p style="margin:4px 0 0;font-size:.84em;opacity:.92">Soit environ ${eur(state.eco*12/Math.max(1,state.orders.length+1))} par an à ce rythme.</p></div>`:''}
+ ${state.current?`<button class="card ordercard" style="width:100%;border-color:var(--brand)" onclick="go('track')">
+   <div class="row"><span style="font-size:1.5em">🛵</span><span style="flex:1"><b>En cours · ${esc(SBY[state.current.storeId].name)}</b>
+   <span class="sub">Arrivée vers ${state.current.arriveeTxt}</span></span><span>→</span></div></button>`:''}
+ ${state.orders.length?state.orders.map(o=>`<div class="card ordercard"><div class="row">
+   <span class="slogo" style="width:42px;height:42px;flex:0 0 42px;font-size:.82em;background:${SBY[o.storeId].color}">${esc(SBY[o.storeId].name.split(' ')[0].slice(0,2).toUpperCase())}</span>
+   <span style="flex:1;min-width:0"><b style="display:block">${esc(SBY[o.storeId].name)}</b>
+   <span class="sub">${o.date} · ${Object.values(o.items).reduce((a,b)=>a+b,0)} articles · ${eur(o.total)}${o.eco>0?' · '+eur(o.eco)+' économisés':''}</span></span></div>
+   <button class="btn sec" style="margin-top:10px;padding:11px" onclick="recommander('${o.id}')">🔁 Recommander au meilleur prix du jour</button></div>`).join('')
+  :(state.current?'':'<div class="empty"><span class="em">📦</span>Aucune commande pour l\'instant.</div>')}
+ <div class="h2">Réglages</div>
+ <div class="card">
+  ${optGen('💶 Mode économies',"Proposer systématiquement l'équivalent le moins cher à qualité vérifiée",state.economie,'setEconomie(!state.economie)')}
+  ${optGen('🔎 Mode confort','Texte et boutons agrandis',state.comfort,'setComfort(!state.comfort)')}</div>
+ <div class="h2">Mon profil</div>
+ <div class="card">${PROFILS.map(p=>`<button class="radio ${state.profil===p.id?'on':''}" onclick="choisirProfil('${p.id}')">
+  <span class="dotr"></span><span style="font-size:1.15em">${p.em}</span>
+  <span class="info"><b>${p.name}</b><span>${p.desc}</span></span></button>`).join('')}</div></div>`}
+function optGen(t,d,on,fn){return`<div class="opt" onclick="${fn}"><span class="info"><b>${t}</b><span>${d}</span></span>
+ <span class="sw ${on?'on':''}"><i></i></span></div>`}
+function recommander(id){const o=state.orders.find(x=>x.id===id);if(!o)return;
+ const items={};Object.entries(o.items).forEach(([pid,q])=>{
+  const ref=reference(o.storeId,PBY[pid].fam);const v=(state.economie?meilleur(o.storeId,PBY[pid].fam,ref):PBY[pid])||PBY[pid];
+  items[v.id]=(items[v.id]||0)+q});
+ state.cart={storeId:o.storeId,items};state.storeId=o.storeId;state.ecoPanier=0;save();go('cart');toast('Panier reconstitué au meilleur prix du jour')}
+
+/* ---------- BARRES ---------- */
+function nudgeBar(){
+ if(!state.nudge)return'';
+ const sid=state.cart.storeId||state.storeId, n=state.nudge, a=PBY[n.alt], c=PBY[n.pid];
+ const gain=(prix(sid,n.pid)-prix(sid,n.alt))*(state.cart.items[n.pid]||1);
+ return`<div class="nudge"><div class="nudge-in">
+  <span style="font-size:1.4em">💡</span>
+  <span style="flex:1;min-width:0"><b>${esc(a.label)} — ${eur(prix(sid,n.alt))}</b>
+  <span>Même ${esc(c.famName.toLowerCase())}, −${n.pct} % au ${c.unit} · vous gagnez ${eur(gain)}</span></span>
+  <button class="act" onclick="remplacer('${n.pid}','${n.alt}')">Remplacer</button>
+  <button class="iconbtn" style="background:rgba(255,255,255,.2);color:#fff" onclick="state.nudge=null;render()">✕</button>
+ </div></div>`}
+function bottom(){
+ const n=nbArticles(), t=totaux();
+ let h=nudgeBar();
+ if(n>0&&(state.view==='store'||state.view==='home')){
+  h+=`<div class="cartbar"><div class="cartbar-in"><button class="btn" onclick="go('cart')">
+   <span>🛒 ${n} article${n>1?'s':''}</span><span style="margin-left:auto">${eur(t.st)} · Voir le panier</span></button></div></div>`;
+  return h}
+ if(['home','orders','cart'].includes(state.view)){
+  const tb=(id,ic,l,b)=>`<button class="tab ${state.view===id?'on':''}" onclick="go('${id}')">
+   <span class="ic">${ic}${b?`<span class="badge">${b}</span>`:''}</span><span>${l}</span></button>`;
+  h+=`<div class="tabbar"><div class="tabbar-in">${tb('home','🏪','Épiceries')}${tb('cart','🛒','Panier',n)}${tb('orders','📦','Commandes',state.current?'•':0)}</div></div>`}
+ return h}
+
+/* ---------- RENDU ---------- */
+function render(){try{renderIn()}catch(e){
+ $('#app').innerHTML='<div class="pad"><div class="empty"><span class="em">⚠️</span><b>Une erreur est survenue</b>'
+  +'<p class="sub">'+esc(e.message)+'</p><button class="btn" style="margin-top:14px" onclick="state.view=\'home\';state.nudge=null;render()">Revenir à l\'accueil</button></div></div>'}}
+function renderIn(){
+ document.body.classList.toggle('comfort',state.comfort);
+ document.querySelectorAll('.cartbar,.tabbar,.nudge').forEach(e=>e.remove());
+ let h;
+ if(!state.profil)h=vOnboarding();
+ else if(state.view==='store')h=topbar()+vStore();
+ else if(state.view==='cart')h=topbar()+vCart();
+ else if(state.view==='checkout')h=topbar()+vCheckout();
+ else if(state.view==='track')h=topbar()+vTrack();
+ else if(state.view==='orders')h=topbar()+vOrders();
+ else h=vHome();
+ $('#app').innerHTML=h;
+ document.body.insertAdjacentHTML('beforeend',bottom())}
+setInterval(()=>{if(state.current&&state.view==='track')render()},5000);
+load();render();
+</script>
+<script src="live.js"></script>
+</body>
+</html>

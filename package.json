@@ -1,0 +1,9 @@
+{
+  "name": "minute-live",
+  "version": "1.0.0",
+  "description": "Courses de derniere minute — donnees reelles (OpenStreetMap, Open Prices, Open Food Facts)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

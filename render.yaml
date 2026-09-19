@@ -1,0 +1,14 @@
+# Blueprint Render — tout est pré-rempli, rien à configurer à la main.
+services:
+  - type: web
+    name: minute-live
+    runtime: node
+    plan: free
+    buildCommand: "echo 'aucune dependance a installer'"
+    startCommand: "node server.js"
+    healthCheckPath: /api/health
+    envVars:
+      - key: MINUTE_UA
+        sync: false          # Render vous demandera votre email au moment du déploiement
+      - key: NODE_VERSION
+        value: "22"
