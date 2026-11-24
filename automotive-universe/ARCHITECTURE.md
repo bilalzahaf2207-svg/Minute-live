@@ -43,6 +43,40 @@ dédié ; il peut être déplacé dans un dépôt privé `automotive-universe` �
 
 ---
 
+## 0. Vous validez chaque étape
+
+Rien ne passe à l'étape suivante sans votre accord explicite :
+
+| # | Étape | Ce que vous voyez | Vos actions |
+|---|---|---|---|
+| 0 | **Identité du compte** (une fois) | Nom affiché, @, direction artistique, planche d'aperçu | Modifier, voir l'aperçu, **valider**. Tant qu'elle n'est pas validée, **aucune vidéo n'est produite**. Toute modification annule la validation |
+| 1 | **Sujets** | Titre, faits, série, source | Valider un sujet, une série entière, ou refuser |
+| 2 | **Script** | Scènes (une ligne = une scène) + légende | Modifier le texte, puis valider → le montage démarre |
+| 3 | **Vidéo** | La vidéo montée (lecteur intégré, lien signé valable 7 jours) | Valider ou refuser avec motif → retour au script |
+| 4 | **Publication** | Compte, légende, visibilité, créneau | **Autoriser la publication**. Si le créneau est passé, report au lendemain même heure |
+
+- Une notification push vous prévient dès qu'un élément attend votre accord.
+- Le service de publication vérifie lui-même l'autorisation juste avant l'envoi : une vidéo
+  sans autorisation n'est jamais publiée, même si elle a été planifiée par erreur.
+- Un refus, à n'importe quelle étape, efface toutes les validations de la vidéo.
+- Depuis l'app Claude : « Qu'est-ce qui attend ma validation ? », « Valide le script 12 »,
+  « Remplace la scène 2 par… », « Refuse la vidéo 12 : titre trop long ». Le connecteur
+  demande à Claude de n'appeler `approve` et `confirm_brand` **que sur votre instruction explicite**.
+- Supprimer une étape de validation n'est possible que par l'API d'administration, avec la phrase
+  « JE NE VALIDE PLUS SCRIPT » (par exemple). Aucune commande de Claude ne le permet.
+
+### Directions artistiques proposées
+
+| Code | Style | Polices (libres, licence OFL, incluses dans `assets/fonts`) | Couleurs |
+|---|---|---|---|
+| `atelier` | Technique, mécanique, texte aligné à gauche, barre rouge course | Oswald Bold + Inter SemiBold | Noir mat, blanc, rouge `#E10600` |
+| `showroom` | Premium, magazine, centré, filets dorés | Inter Display Black + Inter | Graphite, ivoire, champagne `#C8A96A` |
+| `turbo` | Énergique, « le saviez-vous », gros titres dans des blocs | Bebas Neue + Oswald | Noir, jaune `#FFD400` |
+
+Communs aux trois : format 1080×1920, barre de progression et nom de série en haut, @ du compte
+au-dessus de la zone de légende, zones masquées par l'interface TikTok (bas et droite) laissées libres.
+Avec vos photos dans `data/media/`, elles passent en fond, assombries pour garder le texte lisible.
+
 ## A. Connexion à votre compte Claude
 
 | Usage | Comment | Coût |
@@ -138,6 +172,8 @@ disponible dans l'app iPhone et vous écrivez naturellement ; Claude choisit l'o
 | « Prépare une série sur les moteurs V12. » | `plan_series` (+ `import_series` : Claude peut rédiger les fiches lui-même dans la discussion, **sur votre abonnement Pro**, puis les importer, sans coût API) |
 | « Consulte les messages privés en attente. » | `pending_messages` (voir limites) |
 | « Mets en pause les publications. » | `pause_publishing` / `resume_publishing` |
+| « Qu'est-ce qui attend ma validation ? » | `pending_approvals`, puis `approve` / `reject` / `edit_script` sur votre ordre |
+| « Change la direction artistique en showroom. » | `set_brand` (aperçu), puis `confirm_brand` quand vous le dites |
 
 Il y a aussi `status`, `budget_status` (lecture seule) et `run_research`.
 
@@ -237,6 +273,9 @@ Sans réponse, rien n'est engagé. Le code reste en simulation (`PUBLISH_MODE=dr
 | `src/scheduler.js` | Planificateur interne |
 | `src/budget.js` | Plafond, alertes, gel, confirmation du propriétaire |
 | `src/llm.js` | Routeur IA (aucune IA / API Anthropic), contrôle du budget avant chaque appel |
+| `src/approvals.js` | Circuit de validation (sujet, script, vidéo, publication), liens de visionnage signés |
+| `src/brand.js` | Identité du compte et directions artistiques |
+| `assets/fonts/` | Polices libres + licences |
 | `src/commands.js` | Liste blanche des commandes + compréhension simple du français |
 | `src/mcp.js` | Connecteur pour l'app Claude et Claude Code |
 | `src/pipeline/*` | Recherche, script, montage, publication, statistiques, production |

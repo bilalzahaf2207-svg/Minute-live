@@ -19,6 +19,7 @@ export const config = {
   port: num('PORT', 8080),
   tz: env('TZ_AGENT', 'Europe/Paris'),
   dataDir: path.resolve(env('DATA_DIR', './data')),
+  publicUrl: env('PUBLIC_URL', 'http://localhost:8080').replace(/\/$/, ''),
   adminToken: env('ADMIN_TOKEN'),
   mcpPathSecret: env('MCP_PATH_SECRET'),
 

@@ -13,6 +13,7 @@ import { mcpHttp } from './mcp.js';
 import { startScheduler } from './scheduler.js';
 import { importLibrary } from './pipeline/research.js';
 import * as tiktok from './adapters/tiktok.js';
+import { checkMediaSig, setGates, ALL_GATES } from './approvals.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const DASHBOARD = path.join(here, '..', 'public', 'dashboard.html');
@@ -46,6 +47,16 @@ export function createServer() {
       if (url.pathname === '/health') return send(res, 200, { ok: true });
       if (url.pathname === '/' || url.pathname === '/dashboard') return send(res, 200, fs.readFileSync(DASHBOARD), 'text/html; charset=utf-8');
       if (throttled(ip)) return send(res, 429, { error: 'Trop de tentatives' });
+
+      // ── Vidéos et aperçus à valider (liens signés, expirants) ──
+      const media = url.pathname.match(/^\/media\/(\d+|preview)\.(mp4|png)$/);
+      if (media) {
+        if (!checkMediaSig(media[1], url.searchParams.get('exp'), url.searchParams.get('sig'))) { fail(ip); return send(res, 403, { error: 'lien expiré ou invalide' }); }
+        const file = media[1] === 'preview' ? path.join(config.dataDir, 'out', 'preview.png')
+          : getDb().prepare('SELECT file FROM videos WHERE id = ?').get(Number(media[1]))?.file;
+        if (!file || !fs.existsSync(file)) return send(res, 404, { error: 'fichier absent' });
+        return send(res, 200, fs.readFileSync(file), media[2] === 'png' ? 'image/png' : 'video/mp4');
+      }
 
       // ── Connecteur MCP (app Claude / Claude Code) ──
       if (url.pathname.startsWith('/mcp/')) {
@@ -83,6 +94,15 @@ export function createServer() {
           const body = await readJson(req);
           const [name, params] = body.text ? parseIntent(body.text) : [body.name, body.params ?? {}];
           return send(res, 200, { command: name, result: await execute(name, params, body.origin ?? 'api') });
+        }
+        if (url.pathname === '/api/approval-steps' && req.method === 'POST') {
+          // Réservé au propriétaire : retirer une étape de validation exige une confirmation écrite.
+          const body = await readJson(req);
+          const removed = ALL_GATES.filter(g => !(body.steps ?? []).includes(g));
+          if (removed.length && body.confirmation !== `JE NE VALIDE PLUS ${removed.join(' ').toUpperCase()}`) {
+            return send(res, 400, { error: `Confirmation requise : « JE NE VALIDE PLUS ${removed.join(' ').toUpperCase()} »` });
+          }
+          return send(res, 200, { steps: setGates(body.steps ?? ALL_GATES) });
         }
         if (url.pathname === '/api/budget' && req.method === 'GET') return send(res, 200, budgetStatus());
         if (url.pathname === '/api/budget' && req.method === 'POST') {

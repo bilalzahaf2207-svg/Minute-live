@@ -18,7 +18,8 @@ export function openDb(file = path.join(config.dataDir, 'agent.db')) {
       facts TEXT, score REAL DEFAULT 0, status TEXT DEFAULT 'new', created_at TEXT);
     CREATE TABLE IF NOT EXISTS videos (
       id INTEGER PRIMARY KEY, topic_id INTEGER, title TEXT, script TEXT, caption TEXT,
-      file TEXT, status TEXT, scheduled_at TEXT, published_at TEXT, remote_id TEXT,
+      file TEXT, status TEXT, planned_at TEXT, scheduled_at TEXT, published_at TEXT, remote_id TEXT,
+      feedback TEXT, approved_script_at TEXT, approved_video_at TEXT, approved_publish_at TEXT,
       error TEXT, attempts INTEGER DEFAULT 0, created_at TEXT, updated_at TEXT);
     CREATE TABLE IF NOT EXISTS spend (
       id INTEGER PRIMARY KEY, ts TEXT, provider TEXT, purpose TEXT, amount_eur REAL, detail TEXT);

@@ -5,12 +5,13 @@ import path from 'node:path';
 import { config } from '../config.js';
 import { getDb, now, logEvent } from '../db.js';
 import { generate, parseJson } from '../llm.js';
+import { gateOn } from '../approvals.js';
 
 export function addTopic({ title, series = null, source = 'manual', facts = [], hashtags = [], score = 0 }) {
   const db = getDb();
   if (db.prepare('SELECT 1 FROM topics WHERE lower(title) = lower(?)').get(title)) return false;
-  db.prepare('INSERT INTO topics(title, series, source, facts, score, created_at) VALUES(?, ?, ?, ?, ?, ?)')
-    .run(title, series, source, JSON.stringify({ facts, hashtags }), score, now());
+  db.prepare('INSERT INTO topics(title, series, source, facts, score, status, created_at) VALUES(?, ?, ?, ?, ?, ?, ?)')
+    .run(title, series, source, JSON.stringify({ facts, hashtags }), score, gateOn('topic') ? 'proposed' : 'new', now());
   return true;
 }
 

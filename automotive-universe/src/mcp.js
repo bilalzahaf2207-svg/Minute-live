@@ -7,9 +7,13 @@ const SCHEMAS = {
   prepare_videos: { date: { type: 'string', description: 'AAAA-MM-JJ, défaut demain' }, series: { type: 'string' } },
   explain_failures: { since_hours: { type: 'number', description: 'défaut 24' } },
   plan_series: { theme: { type: 'string' }, count: { type: 'number' } },
+  approve: { kind: { type: 'string', enum: ['topic', 'series', 'video'] }, id: { type: 'number' }, ids: { type: 'array', items: { type: 'number' } }, series: { type: 'string' } },
+  reject: { kind: { type: 'string', enum: ['topic', 'video'] }, id: { type: 'number' }, reason: { type: 'string' } },
+  edit_script: { id: { type: 'number' }, scenes: { type: 'array', items: { type: 'string' } }, caption: { type: 'string' } },
+  set_brand: { name: { type: 'string' }, handle: { type: 'string' }, preset: { type: 'string', enum: ['atelier', 'showroom', 'turbo'] }, cta: { type: 'string' } },
   import_series: { payload: { type: 'object', description: '{ series: [{ series, topics: [{ title, facts[], hashtags[] }] }] }' } },
 };
-const REQUIRED = { plan_series: ['theme'], import_series: ['payload'] };
+const REQUIRED = { plan_series: ['theme'], import_series: ['payload'], approve: ['kind'], reject: ['kind', 'id'], edit_script: ['id'] };
 
 function tools() {
   return Object.entries(COMMANDS).map(([name, c]) => ({
@@ -26,7 +30,7 @@ async function handle(msg) {
     case 'initialize':
       return ok({ protocolVersion: params?.protocolVersion || PROTOCOL, capabilities: { tools: {} },
         serverInfo: { name: 'automotive-universe-agent', version: '0.1.0' },
-        instructions: "Agent TikTok AUTOMOTIVE UNIVERSE. Utilise ces outils pour piloter la production. Le budget ne peut pas être modifié d'ici." });
+        instructions: "Agent TikTok AUTOMOTIVE UNIVERSE. Utilise ces outils pour piloter la production. Le budget ne peut pas être modifié d'ici. Le propriétaire valide chaque étape : n'appelle approve et confirm_brand que lorsqu'il le demande explicitement, jamais de ta propre initiative." });
     case 'ping': return ok({});
     case 'tools/list': return ok({ tools: tools() });
     case 'tools/call':

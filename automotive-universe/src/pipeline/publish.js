@@ -3,6 +3,7 @@ import { config } from '../config.js';
 import { getDb, getSetting, now, logEvent } from '../db.js';
 import { alert } from '../alerts.js';
 import * as tiktok from '../adapters/tiktok.js';
+import { gateOn } from '../approvals.js';
 
 const MAX_ATTEMPTS = 3;
 
@@ -14,6 +15,11 @@ export async function publishDue() {
   const due = db.prepare("SELECT * FROM videos WHERE status = 'scheduled' AND scheduled_at <= ? ORDER BY scheduled_at LIMIT 3").all(now());
   let done = 0;
   for (const v of due) {
+    if (gateOn('publish') && !v.approved_publish_at) {
+      logEvent('error', 'publish', `« ${v.title} » bloquée : publication non validée`);
+      db.prepare("UPDATE videos SET status = 'publish_review', updated_at = ? WHERE id = ?").run(now(), v.id);
+      continue;
+    }
     try {
       let remoteId = 'dry-run';
       if (config.publish.mode === 'live') remoteId = await tiktok.publishVideo(v.file, v.caption);

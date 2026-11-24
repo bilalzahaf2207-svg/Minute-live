@@ -10,6 +10,10 @@ import { isPaused } from './pipeline/publish.js';
 import { localNow, addDays } from './time.js';
 import { generate, parseJson } from './llm.js';
 import * as tiktok from './adapters/tiktok.js';
+import path from 'node:path';
+import { pendingApprovals, approve, reject, editScript, gates, mediaUrl } from './approvals.js';
+import { getBrand, setBrand, PRESETS } from './brand.js';
+import { renderPreview } from './pipeline/render.js';
 
 export const COMMANDS = {
   status: {
@@ -24,6 +28,7 @@ export const COMMANDS = {
         next: db.prepare("SELECT id, title, scheduled_at FROM videos WHERE status = 'scheduled' ORDER BY scheduled_at LIMIT 5").all(),
         topics_available: db.prepare("SELECT COUNT(*) AS n FROM topics WHERE status = 'new'").get().n,
         budget: budgetStatus(), heartbeat: getSetting('scheduler.heartbeat'),
+        brand: getBrand(), approval_steps: gates(), awaiting_approval: pendingApprovals().total,
       };
     },
   },
@@ -92,6 +97,46 @@ export const COMMANDS = {
     run: () => { setSetting('publishing.paused', false); logEvent('info', 'command', 'Publications reprises'); return { publishing_paused: false }; },
   },
   budget_status: { description: 'Dépenses du mois, plafond et reste (lecture seule).', params: {}, run: () => budgetStatus() },
+
+  pending_approvals: {
+    description: 'Liste tout ce qui attend votre accord : sujets proposés, scripts, vidéos (avec lien de visionnage), publications.',
+    params: {},
+    run: () => pendingApprovals(),
+  },
+  approve: {
+    description: "Valide UNE étape. kind = topic (id ou ids), series (series), ou video (id : valide l'étape où elle se trouve : script, vidéo ou publication). N'appeler que sur instruction explicite du propriétaire.",
+    params: { kind: 'topic | series | video', id: 'nombre', ids: 'liste', series: 'nom' },
+    run: (p) => approve(p),
+  },
+  reject: {
+    description: 'Refuse un sujet ou une vidéo avec un motif. Une vidéo refusée revient à l’étape script.',
+    params: { kind: 'topic | video', id: 'nombre', reason: 'texte' },
+    run: (p) => reject(p),
+  },
+  edit_script: {
+    description: "Modifie le texte des scènes et/ou la légende d'une vidéo en attente de validation du script.",
+    params: { id: 'nombre', scenes: 'liste de phrases', caption: 'texte' },
+    run: (p) => editScript(p),
+  },
+  get_brand: {
+    description: 'Identité du compte (nom, @, direction artistique) et directions artistiques disponibles.',
+    params: {},
+    run: () => ({ brand: getBrand(), presets: Object.fromEntries(Object.entries(PRESETS).map(([k, v]) => [k, v.label])) }),
+  },
+  set_brand: {
+    description: "Propose une identité (nom, @, direction artistique, phrase d'appel) et renvoie un aperçu. Ne valide PAS : la validation se fait ensuite avec confirm_brand.",
+    params: { name: 'texte', handle: '@...', preset: 'atelier | showroom | turbo', cta: 'texte' },
+    run: async (p) => {
+      const brand = setBrand({ ...p, confirm: false });
+      await renderPreview(brand, { series: 'Moteurs V12 · épisode 1', title: 'Pourquoi un V12 tourne si doucement', fact: 'Une explosion tous les 60° de vilebrequin : la poussée ne s’interrompt jamais.' }, path.join(config.dataDir, 'out', 'preview.png'));
+      return { brand, preview: mediaUrl('preview', 'png', 1), next: 'Regardez l’aperçu, puis confirm_brand pour valider.' };
+    },
+  },
+  confirm_brand: {
+    description: "Valide définitivement l'identité actuelle (nom, @, direction artistique). Sans cette validation, aucune vidéo n'est produite. N'appeler que sur instruction explicite du propriétaire.",
+    params: {},
+    run: () => setBrand({ ...getBrand(), confirm: true }),
+  },
 };
 
 export async function execute(name, params = {}, origin = 'api') {
@@ -106,6 +151,7 @@ export function parseIntent(text) {
   const t = text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   if (/reprend|relance|reactive/.test(t) && /publi/.test(t)) return ['resume_publishing', {}];
   if (/pause|stop|suspend/.test(t)) return ['pause_publishing', {}];
+  if (/a valider|en attente de valid|validation|approuv/.test(t)) return ['pending_approvals', {}];
   if (/pourquoi|echou|echec|erreur|rate/.test(t)) return ['explain_failures', { since_hours: /semaine/.test(t) ? 168 : 24 }];
   if (/perf|analyse|semaine|stat/.test(t)) return ['weekly_report', {}];
   if (/serie/.test(t)) { const m = t.match(/serie (?:sur |de )?(?:les |la |le |l')?(.+)$/); return ['plan_series', { theme: m ? m[1].trim() : t }]; }
