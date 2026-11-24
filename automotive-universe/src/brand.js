@@ -32,7 +32,7 @@ export const PRESETS = {
   },
 };
 
-const DEFAULT_BRAND = { name: 'Automotive Universe', handle: '@automotive.universe', preset: 'atelier', cta: 'Abonne-toi pour la suite', confirmed: false };
+const DEFAULT_BRAND = { name: 'Automotive Universe', handle: '@automotive.vision', preset: 'atelier', cta: 'Abonne-toi pour la suite', confirmed: false };
 
 export function getBrand() { return { ...DEFAULT_BRAND, ...getSetting('brand', {}) }; }
 
