@@ -1,0 +1,18 @@
+{
+  "name": "automotive-universe-agent",
+  "version": "0.1.0",
+  "description": "Agent TikTok autonome AUTOMOTIVE UNIVERSE — moteur de production indépendant de Claude Code",
+  "type": "module",
+  "main": "src/server.js",
+  "bin": { "agentctl": "bin/agentctl.js" },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.js",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.js"
+  },
+  "engines": { "node": ">=22.5" },
+  "optionalDependencies": {
+    "@anthropic-ai/sdk": "^0.70.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
