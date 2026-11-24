@@ -1,0 +1,13 @@
+{
+  "_comment": "Bibliothèque de fiches gratuites. Claude Code (abonnement Pro) peut en ajouter pendant une session de pilotage via `agentctl import`. L'agent les utilise sans aucun appel IA payant.",
+  "series": [
+    {
+      "series": "Moteurs V12",
+      "topics": [
+        { "title": "Pourquoi un V12 tourne si doucement", "facts": ["Un V12 est parfaitement équilibré : forces primaires et secondaires s'annulent", "Pas besoin d'arbre d'équilibrage", "Une explosion tous les 60° de vilebrequin, d'où la sonorité continue"], "hashtags": ["v12", "moteur", "mecanique"] },
+        { "title": "Le V12 Lamborghini, 60 ans d'histoire", "facts": ["Premier V12 Lamborghini conçu par Giotto Bizzarrini en 1963", "Il a équipé la 350 GT puis la Miura et la Countach", "La Revuelto l'associe aujourd'hui à trois moteurs électriques"], "hashtags": ["lamborghini", "v12", "supercar"] },
+        { "title": "Ferrari Colombo : le V12 qui a tout lancé", "facts": ["Dessiné par Gioachino Colombo pour la 125 S de 1947", "Cylindrée initiale d'1,5 litre seulement", "Décliné pendant plus de quarante ans"], "hashtags": ["ferrari", "v12", "histoire"] }
+      ]
+    }
+  ]
+}

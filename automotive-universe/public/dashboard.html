@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="robots" content="noindex">
+<title>Automotive Universe</title>
+<style>
+  :root { --bg:#f5f5f4; --card:#fff; --ink:#1c1917; --mute:#78716c; --line:#e7e5e4; --accent:#b91c1c; --ok:#15803d; --warn:#b45309; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0c0a09; --card:#1c1917; --ink:#f5f5f4; --mute:#a8a29e; --line:#292524; --accent:#f87171; --ok:#4ade80; --warn:#fbbf24; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 -apple-system,system-ui,sans-serif; padding:16px; padding-top:max(16px, env(safe-area-inset-top)); }
+  h1 { font-size:20px; margin:0 0 12px; } h2 { font-size:14px; text-transform:uppercase; letter-spacing:.04em; color:var(--mute); margin:0 0 8px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:12px; }
+  .row { display:flex; gap:8px; flex-wrap:wrap; }
+  button, input { font:inherit; border-radius:10px; border:1px solid var(--line); padding:10px 12px; background:var(--card); color:var(--ink); }
+  button.primary { background:var(--accent); color:#fff; border-color:transparent; }
+  input { flex:1; min-width:0; }
+  .kpi { flex:1; min-width:90px; } .kpi b { display:block; font-size:22px; } .kpi span { color:var(--mute); font-size:13px; }
+  ul { list-style:none; padding:0; margin:0; } li { padding:8px 0; border-top:1px solid var(--line); font-size:14px; } li:first-child { border-top:0; }
+  .err { color:var(--accent); } .ok { color:var(--ok); } .warn { color:var(--warn); }
+  pre { white-space:pre-wrap; word-break:break-word; font-size:13px; margin:8px 0 0; max-height:320px; overflow:auto; }
+  #login { display:none; }
+  .badge { display:inline-block; font-size:12px; padding:2px 8px; border-radius:99px; background:var(--accent); color:#fff; margin-left:6px; vertical-align:middle; }
+  .item { border-top:1px solid var(--line); padding:12px 0; } .item:first-child { border-top:0; }
+  textarea, select { font:inherit; width:100%; border-radius:10px; border:1px solid var(--line); padding:10px; background:var(--card); color:var(--ink); }
+  textarea { min-height:120px; } video, img.prev { width:100%; border-radius:10px; margin:8px 0; background:#000; }
+  .small { font-size:13px; color:var(--mute); }
+</style>
+</head>
+<body>
+<h1>Automotive Universe — agent</h1>
+
+<div class="card" id="login">
+  <h2>Connexion</h2>
+  <p>Collez votre jeton d'administration (conservé uniquement sur cet appareil).</p>
+  <div class="row"><input id="tok" type="password" autocomplete="off"><button class="primary" onclick="saveTok()">OK</button></div>
+</div>
+
+<div id="app" hidden>
+  <div class="card">
+    <div class="row">
+      <div class="kpi"><b id="k-pub">–</b><span>publiées</span></div>
+      <div class="kpi"><b id="k-sched">–</b><span>planifiées</span></div>
+      <div class="kpi"><b id="k-fail">–</b><span>échecs</span></div>
+      <div class="kpi"><b id="k-budget">–</b><span>budget du mois</span></div>
+    </div>
+    <p id="state" style="margin:10px 0 0;font-size:14px"></p>
+  </div>
+
+  <div class="card">
+    <h2>Demander</h2>
+    <div class="row"><input id="ask" placeholder="« Prépare les vidéos de demain »"><button class="primary" onclick="ask()">Envoyer</button></div>
+    <div class="row" style="margin-top:8px">
+      <button onclick="cmd('prepare_videos')">Préparer demain</button>
+      <button onclick="cmd('explain_failures')">Échecs</button>
+      <button onclick="cmd('weekly_report')">Semaine</button>
+      <button id="pauseBtn" onclick="togglePause()">Pause</button>
+    </div>
+    <pre id="out"></pre>
+  </div>
+
+  <div class="card"><h2>À valider <span class="badge" id="nPending">0</span></h2><div id="pending"></div></div>
+
+  <div class="card">
+    <h2>Identité du compte <span id="brandState"></span></h2>
+    <label class="small">Nom affiché</label><input id="bName" style="width:100%">
+    <label class="small">Nom d'utilisateur TikTok</label><input id="bHandle" style="width:100%">
+    <label class="small">Direction artistique</label><select id="bPreset"></select>
+    <label class="small">Phrase de fin</label><input id="bCta" style="width:100%">
+    <div class="row" style="margin-top:8px"><button onclick="previewBrand()">Voir l'aperçu</button><button class="primary" onclick="confirmBrand()">Valider cette identité</button></div>
+    <img class="prev" id="bPrev" hidden alt="Aperçu de la direction artistique">
+  </div>
+
+  <div class="card"><h2>Prochaines vidéos</h2><ul id="videos"></ul></div>
+  <div class="card"><h2>Journal</h2><ul id="events"></ul></div>
+</div>
+
+<script>
+let token = ''; let paused = false;
+try { token = localStorage.getItem('au_token') || ''; } catch {}
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+function saveTok() { token = $('tok').value.trim(); try { localStorage.setItem('au_token', token); } catch {} load(); }
+async function api(path, body) {
+  const r = await fetch(path, { method: body ? 'POST' : 'GET', headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  if (r.status === 401) { $('login').style.display = 'block'; $('app').hidden = true; throw new Error('non autorisé'); }
+  return r.json();
+}
+const fmt = iso => iso ? new Date(iso).toLocaleString('fr-FR', { weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) : '';
+async function load() {
+  if (!token) { $('login').style.display = 'block'; return; }
+  const s = (await api('/api/command', { name: 'status', origin: 'dashboard' })).result;
+  $('login').style.display = 'none'; $('app').hidden = false;
+  $('k-pub').textContent = s.videos.published ?? 0; $('k-sched').textContent = s.videos.scheduled ?? 0; $('k-fail').textContent = s.videos.failed ?? 0;
+  $('k-budget').textContent = `${s.budget.spent_eur.toFixed(2)} / ${s.budget.cap_eur} €`;
+  paused = s.publishing_paused; $('pauseBtn').textContent = paused ? 'Reprendre' : 'Pause';
+  $('state').innerHTML = `${paused ? '<span class="warn">Publications en pause</span>' : '<span class="ok">Publications actives</span>'} · mode ${esc(s.publish_mode)} · IA ${esc(s.llm_provider)} · ${s.topics_available} sujets en réserve`;
+  const vids = await api('/api/videos');
+  $('videos').innerHTML = vids.slice(0, 10).map(v => `<li><b>${esc(v.title)}</b><br><span class="${v.status==='failed'?'err':''}">${esc(v.status)}</span> · ${fmt(v.scheduled_at)}${v.error ? `<br><span class="err">${esc(v.error)}</span>` : ''}</li>`).join('') || '<li>Aucune vidéo</li>';
+  await Promise.all([loadPending(), loadBrand()]);
+  const ev = await api('/api/events');
+  $('events').innerHTML = ev.slice(0, 15).map(e => `<li class="${e.level==='error'?'err':e.level==='warn'?'warn':''}">${fmt(e.ts)} — ${esc(e.message)}</li>`).join('');
+}
+async function loadPending() {
+  const p = (await api('/api/command', { name: 'pending_approvals', origin: 'dashboard' })).result;
+  $('nPending').textContent = p.total;
+  const bySeries = {};
+  p.topics.forEach(t => (bySeries[t.series || 'Sans série'] ??= []).push(t));
+  let html = Object.entries(bySeries).map(([series, ts]) => `<div class="item"><b>Sujets proposés — ${esc(series)}</b>
+    ${ts.map(t => `<div style="margin:8px 0"><b>${esc(t.title)}</b><div class="small">${t.facts.map(esc).join(' · ')}</div>
+      <div class="row"><button onclick="act('approve',{kind:'topic',id:${t.id}})">Valider</button><button onclick="act('reject',{kind:'topic',id:${t.id}})">Refuser</button></div></div>`).join('')}
+    ${series !== 'Sans série' ? `<button class="primary" onclick='act("approve",{kind:"series",series:${JSON.stringify(series)}})'>Valider toute la série</button>` : ''}</div>`).join('');
+  html += p.videos.map(v => `<div class="item"><b>${esc(v.title)}</b><div class="small">Étape : ${esc(v.step)} · prévue ${fmt(v.planned_at)}</div>
+    ${v.feedback ? `<div class="warn small">Retour : ${esc(v.feedback)}</div>` : ''}
+    ${v.step === 'script'
+      ? `<textarea id="sc${v.id}">${esc((v.scenes || []).join('\n'))}</textarea><div class="small">Une ligne = une scène.</div>
+         <textarea id="cap${v.id}" style="min-height:60px">${esc(v.caption)}</textarea>
+         <div class="row"><button onclick="saveScript(${v.id})">Enregistrer</button><button class="primary" onclick="saveScript(${v.id}, true)">Valider le script</button></div>`
+      : `<video src="${esc(v.watch)}" controls playsinline preload="metadata"></video>
+         <div class="small">Légende : ${esc(v.caption)}</div>
+         ${v.publish_as ? `<div class="small">Publication sur ${esc(v.publish_as.account)} · visibilité ${esc(v.publish_as.visibility)} · mode ${esc(v.publish_as.mode)}</div>` : ''}
+         <div class="row"><button class="primary" onclick="act('approve',{kind:'video',id:${v.id}})">${v.step === 'publication' ? 'Autoriser la publication' : 'Valider la vidéo'}</button>
+         <button onclick="rejectVideo(${v.id})">Refuser</button></div>`}</div>`).join('');
+  $('pending').innerHTML = html || '<p class="small">Rien à valider.</p>';
+}
+async function act(name, params) { const r = await api('/api/command', { name, params, origin: 'dashboard' }); $('out').textContent = JSON.stringify(r.result ?? r, null, 2); load(); }
+async function saveScript(id, approveAfter) {
+  await api('/api/command', { name: 'edit_script', params: { id, scenes: $('sc' + id).value.split('\n').map(s => s.trim()).filter(Boolean), caption: $('cap' + id).value }, origin: 'dashboard' });
+  if (approveAfter) { $('out').textContent = 'Montage en cours…'; await act('approve', { kind: 'video', id }); } else load();
+}
+function rejectVideo(id) { const reason = prompt('Motif du refus ?') || ''; act('reject', { kind: 'video', id, reason }); }
+async function loadBrand() {
+  const b = (await api('/api/command', { name: 'get_brand', origin: 'dashboard' })).result;
+  if (!$('bPreset').options.length) $('bPreset').innerHTML = Object.entries(b.presets).map(([k, l]) => `<option value="${k}">${esc(l)}</option>`).join('');
+  if (document.activeElement?.closest?.('.card')?.contains($('bName'))) return;
+  $('bName').value = b.brand.name; $('bHandle').value = b.brand.handle; $('bPreset').value = b.brand.preset; $('bCta').value = b.brand.cta;
+  $('brandState').innerHTML = b.brand.confirmed ? '<span class="ok">· validée</span>' : '<span class="warn">· à valider</span>';
+}
+async function previewBrand() {
+  $('out').textContent = 'Génération de l’aperçu…';
+  const r = (await api('/api/command', { name: 'set_brand', params: { name: $('bName').value, handle: $('bHandle').value, preset: $('bPreset').value, cta: $('bCta').value }, origin: 'dashboard' })).result;
+  $('bPrev').src = r.preview; $('bPrev').hidden = false; $('out').textContent = ''; loadBrand();
+}
+async function confirmBrand() {
+  if (!confirm('Valider définitivement ce nom et cette direction artistique ?')) return;
+  await previewBrand(); await act('confirm_brand');
+}
+async function cmd(name, params) { $('out').textContent = '…'; const r = await api('/api/command', { name, params, origin: 'dashboard' }); $('out').textContent = JSON.stringify(r.result, null, 2); load(); }
+async function ask() { const text = $('ask').value.trim(); if (!text) return; $('out').textContent = '…'; const r = await api('/api/command', { text, origin: 'dashboard' }); $('out').textContent = `→ ${r.command}\n` + JSON.stringify(r.result, null, 2); load(); }
+function togglePause() { cmd(paused ? 'resume_publishing' : 'pause_publishing'); }
+load(); setInterval(() => token && load().catch(() => {}), 60000);
+</script>
+</body>
+</html>
