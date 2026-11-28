@@ -1,0 +1,47 @@
+{
+  "id": "elysea-vanity",
+  "sku": "ELY-VAN-01",
+  "slug": { "fr": "coiffeuse-elysea", "en": "elysea-vanity" },
+  "name": { "fr": "Coiffeuse ELYSÉA", "en": "ELYSÉA Vanity" },
+  "tagline": {
+    "fr": "Miroir escamotable, rangement intérieur et pouf intégré.",
+    "en": "Fold-away mirror, inner storage and built-in stool."
+  },
+  "price": 59000,
+  "compareAtPrice": null,
+  "currency": "EUR",
+  "promotion": {
+    "active": false,
+    "type": "percent",
+    "value": 10,
+    "label": { "fr": "Offre de lancement", "en": "Launch offer" },
+    "endsAt": null
+  },
+  "variants": [
+    {
+      "id": "rayures-beige-cafe",
+      "sku": "ELY-VAN-01-BC",
+      "name": { "fr": "Rayures beige & café", "en": "Beige & coffee stripes" },
+      "swatch": ["#d6c4aa", "#604432"],
+      "priceDelta": 0,
+      "stock": 12,
+      "active": true,
+      "image": "studio-threequarter"
+    }
+  ],
+  "gallery": [
+    { "id": "studio-threequarter", "src": "/img/renders/studio-threequarter", "widths": [640, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "4/5", "alt": { "fr": "Coiffeuse ELYSÉA vue de trois-quarts, fermée", "en": "ELYSÉA vanity, three-quarter view, closed" }, "label": { "fr": "Vue de trois-quarts", "en": "Three-quarter view" } },
+    { "id": "studio-front", "src": "/img/renders/studio-front", "widths": [640, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "4/5", "alt": { "fr": "Coiffeuse ELYSÉA vue de face", "en": "ELYSÉA vanity, front view" }, "label": { "fr": "Vue de face", "en": "Front view" } },
+    { "id": "studio-top", "src": "/img/renders/studio-top", "widths": [600, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "1/1", "alt": { "fr": "Coiffeuse ELYSÉA vue de dessus, plateau fermé", "en": "ELYSÉA vanity, top view, lid closed" }, "label": { "fr": "Vue de dessus", "en": "Top view" } },
+    { "id": "studio-mirror", "src": "/img/renders/studio-mirror", "widths": [640, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "4/5", "alt": { "fr": "Coiffeuse ELYSÉA, miroir ouvert", "en": "ELYSÉA vanity with the mirror open" }, "label": { "fr": "Miroir ouvert", "en": "Mirror open" } },
+    { "id": "studio-storage", "src": "/img/renders/studio-storage", "widths": [640, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "4/5", "alt": { "fr": "Compartiment de rangement intérieur de la coiffeuse ELYSÉA", "en": "Inner storage compartment of the ELYSÉA vanity" }, "label": { "fr": "Rangement intérieur", "en": "Inner storage" } },
+    { "id": "studio-pouf-out", "src": "/img/renders/studio-pouf-out", "widths": [640, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "4/5", "alt": { "fr": "Pouf demi-lune sorti de la coiffeuse ELYSÉA", "en": "Half-moon stool pulled out of the ELYSÉA vanity" }, "label": { "fr": "Pouf sorti", "en": "Stool out" } },
+    { "id": "studio-pouf-in", "src": "/img/renders/studio-pouf-in", "widths": [640, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "4/5", "alt": { "fr": "Pouf intégré dans la structure de la coiffeuse ELYSÉA", "en": "Stool tucked into the ELYSÉA vanity" }, "label": { "fr": "Pouf intégré", "en": "Stool tucked in" } },
+    { "id": "macro-fabric", "src": "/img/renders/macro-fabric", "widths": [600, 1000, 1600], "formats": ["avif", "webp", "jpg"], "ratio": "1/1", "alt": { "fr": "Gros plan sur le tissu côtelé à rayures verticales beige et brun", "en": "Close-up of the ribbed fabric with vertical beige and brown stripes" }, "label": { "fr": "Tissu côtelé", "en": "Ribbed fabric" } },
+    { "id": "interior-bedroom", "src": "/img/renders/interior-bedroom", "widths": [800, 1400, 2400], "formats": ["avif", "webp", "jpg"], "ratio": "16/9", "alt": { "fr": "Coiffeuse ELYSÉA dans une chambre contemporaine", "en": "ELYSÉA vanity in a contemporary bedroom" }, "label": { "fr": "En situation", "en": "In situ" } }
+  ],
+  "dimensions": { "width": 65, "depth": 65, "height": 83, "unit": "cm" },
+  "logistics": { "volume": { "fr": "0,35 m³", "en": "0.35 m³" }, "grossWeight": { "fr": "35 kg", "en": "35 kg" } },
+  "model3d": null,
+  "updatedAt": null
+}

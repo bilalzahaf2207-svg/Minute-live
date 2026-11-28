@@ -1,0 +1,44 @@
+{
+  "storeName": "ELYSÉA",
+  "siteUrl": "",
+  "legalName": "",
+  "contactEmail": "",
+  "orderNotificationEmail": "",
+  "phone": "",
+  "address": "",
+  "companyId": "",
+  "vatNumber": "",
+  "currency": "EUR",
+  "pricesIncludeTax": true,
+  "showLowStock": true,
+  "lowStockThreshold": 3,
+  "payments": { "demoMode": true },
+  "shipping": {
+    "configured": false,
+    "zones": [
+      { "id": "fr", "name": { "fr": "France métropolitaine", "en": "Metropolitan France" }, "countries": ["FR"], "rate": 4900, "perAdditionalItem": 2500, "freeOver": null, "delay": { "fr": "", "en": "" } },
+      { "id": "eu-west", "name": { "fr": "Belgique, Luxembourg, Monaco", "en": "Belgium, Luxembourg, Monaco" }, "countries": ["BE", "LU", "MC"], "rate": 8900, "perAdditionalItem": 4500, "freeOver": null, "delay": { "fr": "", "en": "" } }
+    ]
+  },
+  "policies": {
+    "delivery": { "fr": "", "en": "" },
+    "returns": { "fr": "", "en": "" },
+    "warranty": { "fr": "", "en": "" },
+    "care": {
+      "fr": "Conseils généraux pour les tissus côtelés : dépoussiérez régulièrement avec un aspirateur muni d'une brosse douce, en suivant le sens des côtes. En cas de tache, tamponnez sans frotter avec un chiffon blanc légèrement humide, puis laissez sécher à l'air libre. Évitez l'exposition prolongée au soleil direct et aux sources de chaleur. Testez toujours un produit sur une zone discrète. Reportez-vous aux recommandations figurant sur l'étiquette du produit.",
+      "en": "General advice for ribbed fabrics: dust regularly with a vacuum fitted with a soft brush, following the direction of the ribs. For stains, blot without rubbing using a slightly damp white cloth, then let it air-dry. Avoid prolonged direct sunlight and heat sources. Always test a product on a hidden area first. Refer to the recommendations on the product label."
+    }
+  },
+  "legal": {
+    "legalNotice": { "fr": "", "en": "" },
+    "terms": { "fr": "", "en": "" },
+    "privacy": { "fr": "", "en": "" }
+  },
+  "reassurance": [
+    { "icon": "lock", "title": { "fr": "Paiement sécurisé", "en": "Secure payment" }, "text": { "fr": "Transactions chiffrées via Stripe", "en": "Encrypted transactions via Stripe" } },
+    { "icon": "truck", "title": { "fr": "Livraison à domicile", "en": "Home delivery" }, "text": { "fr": "Frais calculés selon votre adresse", "en": "Costs calculated by address" } },
+    { "icon": "ruler", "title": { "fr": "Ø 65 × 83 cm", "en": "Ø 65 × 83 cm" }, "text": { "fr": "Un format pensé pour les petits espaces", "en": "Sized for smaller spaces" } },
+    { "icon": "chat", "title": { "fr": "Conseil personnalisé", "en": "Personal advice" }, "text": { "fr": "Une question ? Nous vous répondons", "en": "A question? We'll answer" } }
+  ],
+  "social": { "instagram": "", "pinterest": "" }
+}

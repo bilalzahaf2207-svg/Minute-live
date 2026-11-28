@@ -1,5 +1,8 @@
 # Minute — données réelles, en direct
 
+> Ce dépôt héberge aussi **ELYSÉA — Smart Vanity Collection**, boutique e-commerce
+> premium autonome : voir [`elysea/README.md`](elysea/README.md).
+
 Application de courses de dernière minute branchée sur des données réelles :
 magasins réellement présents autour de l'utilisateur, produits avec photos et
 Nutri-Score, prix relevés en magasin et datés.

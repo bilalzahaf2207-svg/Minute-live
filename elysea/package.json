@@ -1,0 +1,24 @@
+{
+  "name": "elysea",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ELYSÉA — Smart Vanity Collection. Boutique e-commerce premium (Node, SSR, Three.js).",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "test:e2e": "node tests/e2e/run.mjs",
+    "render": "node tools/render-images.mjs"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@fontsource/cormorant-garamond": "5.1.0",
+    "@fontsource-variable/inter": "5.1.0"
+  },
+  "license": "UNLICENSED"
+}

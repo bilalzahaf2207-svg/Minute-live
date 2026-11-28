@@ -1,0 +1,6 @@
+node_modules
+data
+.render-tmp
+tests
+tools
+.env

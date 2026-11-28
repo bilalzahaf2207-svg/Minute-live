@@ -1,0 +1,1 @@
+{ "name": "ELYSÉA — Smart Vanity Collection", "short_name": "ELYSÉA", "start_url": "/", "display": "standalone", "background_color": "#f7f3ed", "theme_color": "#f7f3ed", "icons": [{ "src": "/img/favicon.svg", "sizes": "any", "type": "image/svg+xml" }] }
